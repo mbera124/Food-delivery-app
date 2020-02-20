@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home">
+    tools:context=".activities.Home">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -26,15 +26,6 @@
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="center" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="@color/White"
-        app:srcCompat="@drawable/ic_shopping_cart_black_24dp"
-        tools:ignore="UnusedAttribute,VectorDrawableCompat"
-        />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

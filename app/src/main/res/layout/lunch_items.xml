@@ -4,25 +4,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     app:cardElevation="4dp"
-    android:id="@+id/cvMenuItem"
-    android:layout_marginBottom="8dp">
+    android:id="@+id/cvlunchitem"
+    android:layout_marginBottom="8dp"
+    >
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/menu_image"
-        android:src="@drawable/raspberry"
-        android:scaleType="centerCrop"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lunch_image"
+            android:src="@drawable/lunch"
+            android:scaleType="centerCrop"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/menu_name"
-            android:text="Name of Menu"
+            android:id="@+id/lunch_name"
+            android:text="Name"
             android:textColor="@color/Black"
             android:background="@color/GreenYellow"
             android:textSize="20sp"
