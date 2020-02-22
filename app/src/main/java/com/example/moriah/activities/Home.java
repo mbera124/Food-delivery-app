@@ -51,6 +51,7 @@ public class Home extends AppCompatActivity {
     DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+    private FirebaseAuth auth;
 
 
     private MenuAdapter menuAdapter;
@@ -63,6 +64,9 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
+        auth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Menu");
         setSupportActionBar(toolbar);
@@ -89,25 +93,32 @@ public class Home extends AppCompatActivity {
             switch(id)
             {
                 case R.id.nav_dashboard:
-                    startActivity(new Intent(Home.this, UserDashboard.class));
+                    startActivity(new Intent(this, UserDashboard.class));
                     finish();
+                    return true;
                 case R.id.nav_menu:
-                    startActivity(new Intent(Home.this, Home.class));
+                    startActivity(new Intent(this, Home.class));
                     finish();
+                    return true;
                 case R.id.nav_cart:
-                    startActivity(new Intent(Home.this, CartActivity.class));
+                    startActivity(new Intent(this, CartActivity.class));
                     finish();
+                    return true;
                 case R.id.nav_orders:
-                    startActivity(new Intent(Home.this, OrdersActivity.class));
+                    startActivity(new Intent(this, OrdersActivity.class));
                     finish();
+                    return true;
+                case R.id.nav_profile:
+                    startActivity(new Intent(this, ProfileActivity.class));
                     finish();
+                    return true;
                 case R.id.nav_logout:
+                    auth.signOut();
+                    Intent i = new Intent(getApplicationContext(),Login.class);
+                    startActivity(i);
                     finish();
-                    System.exit(0);
-//                    auth.signOut();
-//                    Intent i = new Intent(getApplicationContext(),Login.class);
-//                    startActivity(i);
-                default:
+                    return true;
+              default:
                     return true;
             }
         });
@@ -163,16 +174,16 @@ public class Home extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-
-        if (dl.isDrawerOpen(GravityCompat.START)) {
-            dl.closeDrawer(GravityCompat.START);
-            super.onBackPressed();
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//
+//        if (dl.isDrawerOpen(GravityCompat.START)) {
+//            dl.closeDrawer(GravityCompat.START);
+//            super.onBackPressed();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
 
 

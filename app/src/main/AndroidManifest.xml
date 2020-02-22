@@ -12,7 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.CartActivity"></activity>
+        <activity android:name=".activities.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.CartActivity" />
         <activity android:name=".activities.AboutUsActivity" />
         <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.OrdersActivity" />
@@ -28,13 +35,7 @@
         <activity
             android:name=".activities.Login"
             android:label="@string/title_activity_login" />
-        <activity android:name=".activities.WelcomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activities.WelcomeActivity"/>
     </application>
 
 </manifest>

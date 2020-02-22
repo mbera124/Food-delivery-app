@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moriah.R;
 import com.example.moriah.activities.BreakfastActivity;
 import com.example.moriah.activities.Login;
+import com.example.moriah.activities.LunchActivity;
 import com.example.moriah.activities.Signup;
 import com.example.moriah.model.Breakfast;
 import com.example.moriah.model.Category;
@@ -27,6 +28,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
 
    private List<Category> categoryList;
    private Context mContext;
+   private String TAG = "MenuAdapter";
 
 
    public MenuAdapter(Context context, List<Category> categoryList){
@@ -48,10 +50,34 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
        holder.txtmenuname.setText(category.getName());
         Picasso.get().load(category.getImage()).placeholder(R.drawable.raspberry).into(holder.imageView);
 
-        holder.cvMenuItem.setOnClickListener(v ->
-//                Log.d(Tag,"onClick: clicked on: " + categoryList.get(position));
-                Toast.makeText(mContext, "You just clicked" +" "+ category.getName(),
-                Toast.LENGTH_SHORT).show());
+        holder.cvMenuItem.setOnClickListener(new View.OnClickListener() {
+                                                 @Override
+                                                 public void onClick(View v) {
+                                                     Log.d(TAG,"onClick: clicked on: " + categoryList.get(position));
+
+                                                     if(!category.getName().equals("")){
+                                                         if(category.getName().toLowerCase().equals("breakfast")){
+                                                             Intent intent = new Intent(mContext, BreakfastActivity.class);
+                                                             intent.putExtra("image_url",category.getImage());
+                                                             intent.putExtra("image_name",category.getName());
+                                                             mContext.startActivity(intent);
+                                                         }
+                                                         else if(category.getName().toLowerCase().equals("lunch")){
+                                                             Intent intent = new Intent(mContext, LunchActivity.class);
+                                                             intent.putExtra("image_url",category.getImage());
+                                                             intent.putExtra("image_name",category.getName());
+                                                             mContext.startActivity(intent);
+                                                         } else {
+                                                             Toast.makeText(mContext, "You just clicked" + " " + category.getName(),
+                                                                     Toast.LENGTH_SHORT).show();
+                                                         }
+                                                     }
+
+
+                                                 }
+                                             });
+//
+
 
 //        Intent intent=new Intent(mContext,BreakfastActivity.class);
 //        intent.putExtra("image_url",category.getImage());

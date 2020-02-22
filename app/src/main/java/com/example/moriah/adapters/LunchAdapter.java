@@ -40,12 +40,17 @@ public class LunchAdapter extends RecyclerView.Adapter<LunchViewHolder> {
         holder.txtlunchname.setText(lunch.getName());
         Picasso.get().load(lunch.getImage()).placeholder(R.drawable.lunch).into(holder.imageView);
 
-        holder.cvlunchitem.setOnClickListener(v -> Toast.makeText(mContext, "You just clicked" +" "+ lunch.getName(),
-                Toast.LENGTH_SHORT).show());
+        holder.cvlunchitem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "You just clicked" + " " + lunch.getName(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return lunchList.size();
     }
 }

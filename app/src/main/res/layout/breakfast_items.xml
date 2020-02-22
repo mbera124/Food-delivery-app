@@ -13,11 +13,11 @@
     android:layout_marginTop="8dp">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         >
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="160dp"
             android:id="@+id/breakfast_image"
             android:src="@drawable/breakfast"
             android:scaleType="centerCrop"/>
@@ -30,7 +30,8 @@
             android:background="@color/GreenYellow"
             android:textSize="20sp"
             android:gravity="center"
-            android:layout_alignParentBottom="true"/>
+            android:layout_below="@id/breakfast_image"
+           />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

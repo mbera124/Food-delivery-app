@@ -36,8 +36,8 @@ public class ProfileActivity extends AppCompatActivity {
         // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //  toolbar.setTitle(getString(R.string.app_name));
         // setSupportActionBar(toolbar);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         //get firebase auth instance
 
         auth = FirebaseAuth.getInstance();

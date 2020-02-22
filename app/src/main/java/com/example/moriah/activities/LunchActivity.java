@@ -1,6 +1,7 @@
 package com.example.moriah.activities;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,7 +53,7 @@ public class LunchActivity extends AppCompatActivity {
         //load menu
         recycler_lunch = findViewById(R.id.recycler_lunch);
         recycler_lunch.setHasFixedSize(true);
-        layoutManager = new GridLayoutManager(this, 2);
+        layoutManager = new GridLayoutManager(this, 3);
         recycler_lunch.setLayoutManager(layoutManager);
         recycler_lunch.setAdapter(lunchAdapter);
         loadLunch();
@@ -74,7 +75,7 @@ public class LunchActivity extends AppCompatActivity {
 
 
                 }
-                //Toast.makeText(Home.this, "" + categoryList.size(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LunchActivity.this, "" + lunchList.size(), Toast.LENGTH_LONG).show();
                 lunchAdapter.notifyDataSetChanged();
             }
 

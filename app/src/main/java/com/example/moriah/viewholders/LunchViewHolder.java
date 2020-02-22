@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moriah.Interface.ItemClickListener;
 import com.example.moriah.R;
 
-public class LunchViewHolder  extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class LunchViewHolder  extends RecyclerView.ViewHolder {
 
     public TextView txtlunchname;
     public ImageView imageView;
@@ -21,17 +21,18 @@ public class LunchViewHolder  extends RecyclerView.ViewHolder implements View.On
 
     public LunchViewHolder(@NonNull View itemView) {
         super(itemView);
-        txtlunchname=itemView.findViewById(R.id.lunch_name);
-        imageView=itemView.findViewById(R.id.lunch_image);
+        txtlunchname = itemView.findViewById(R.id.lunch_name);
+        imageView = itemView.findViewById(R.id.lunch_image);
         cvlunchitem = itemView.findViewById(R.id.cvlunchitem);
     }
-    public void setItemClickListener(ItemClickListener itemClickListener){
-        this.itemClickListener=itemClickListener;
+
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
+}
 
-
-    @Override
+  /**  @Override
     public void onClick(View v) {
         itemClickListener.onClick(v,getAdapterPosition(),false);
     }
-}
+} **/

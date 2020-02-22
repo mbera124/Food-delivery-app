@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class UserDashboard extends AppCompatActivity {
     CardView cardMenu, cardOrders, cardProfile, cardNotifications, cardAbout, cardSignout;
-    FirebaseAuth mAuth;
     PrefManager prefManager;
     private FirebaseAuth auth;
 
@@ -30,9 +29,6 @@ public class UserDashboard extends AppCompatActivity {
         cardAbout = findViewById(R.id.cardAbout);
         cardSignout = findViewById(R.id.cardsignout);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        auth = FirebaseAuth.getInstance();
         prefManager = new PrefManager(this);
 
         auth = FirebaseAuth.getInstance();
@@ -40,24 +36,54 @@ public class UserDashboard extends AppCompatActivity {
             Toast.makeText(UserDashboard.this, "Welcome back "+" "+ prefManager.getUserName()+" ", Toast.LENGTH_LONG).show();
         }
 
+          cardMenu.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  cardMenuClicked();
+              }
+          });
+        cardOrders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardOrdersClicked();
+            }
+        });
+
+        cardProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardProfileClicked();
+            }
+        });
+
+        cardNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardNotificationsClicked();
+            }
+        });
+
+        cardAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardAboutClicked();
+            }
+        });
+        cardSignout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardSignoutClicked();
+            }
+        });
 
 
-        //Method calls
-        cardMenuClicked();
-        cardOrdersClicked();
-        cardNotificationsClicked();
-        cardProfileClicked();
-        cardAboutClicked();
-        cardSignoutClicked();
-        // imagemenuClicked();
 
-        mAuth = FirebaseAuth.getInstance();
 
 
     }
 
     public void  cardMenuClicked() {
-        cardMenu.setOnClickListener(v -> {
+
             cardMenu.setCardElevation(15);
             // cardHomes.animate().rotationBy(360);
             cardMenu.animate().alphaBy(10);
@@ -77,11 +103,11 @@ public class UserDashboard extends AppCompatActivity {
 
             startActivity(new Intent(UserDashboard.this, Home.class));
 
-        });
+
     }
 
     public void cardOrdersClicked() {
-        cardOrders.setOnClickListener(v -> {
+
             cardOrders.setCardElevation(15);
             cardOrders.animate().rotationBy(360);
             cardOrders.setRadius(20);
@@ -100,11 +126,11 @@ public class UserDashboard extends AppCompatActivity {
             Intent i = new Intent(getApplicationContext(),OrdersActivity.class);
             startActivity(i);
 
-        });
+
     }
 
     public void cardProfileClicked() {
-        cardProfile.setOnClickListener(v -> {
+
             cardProfile.setCardElevation(15);
             // cardApartments.animate().rotationBy(360);
             cardProfile.animate().alphaBy(10);
@@ -127,11 +153,11 @@ public class UserDashboard extends AppCompatActivity {
 
             //startActivity(new Intent(UserDashboardActivity.this, Apartments.class));
 
-        });
+
     }
 
     public void cardNotificationsClicked() {
-        cardNotifications.setOnClickListener(v -> {
+
             cardNotifications.setCardElevation(15);
             // cardSales.animate().rotationBy(360);
             cardNotifications.animate().alphaBy(10);
@@ -151,12 +177,11 @@ public class UserDashboard extends AppCompatActivity {
             Intent i = new Intent(getApplicationContext(),NotificationsActivity.class);
             startActivity(i);
 
-        });
     }
 
 
     public void cardSignoutClicked() {
-        cardSignout.setOnClickListener(v -> {
+
             cardSignout.setCardElevation(15);
             //cardSignout.animate().rotationBy(360);
             cardSignout.animate().alphaBy(10);
@@ -174,16 +199,16 @@ public class UserDashboard extends AppCompatActivity {
             cardAbout.setRadius(0);
 
 
-             mAuth.signOut();
+             auth.signOut();
             Intent i = new Intent(getApplicationContext(),Login.class);
             startActivity(i);
 
-        });
+
     }
 
 
     public void cardAboutClicked() {
-        cardAbout.setOnClickListener(v -> {
+
             cardAbout.setCardElevation(15);
             //cardAbout.animate().rotationBy(360);
             cardAbout.animate().alphaBy(10);
@@ -203,7 +228,7 @@ public class UserDashboard extends AppCompatActivity {
             Intent i = new Intent(getApplicationContext(), AboutUsActivity.class);
             startActivity(i);
 
-        });
+
 
     }
 
