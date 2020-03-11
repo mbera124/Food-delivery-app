@@ -1,19 +1,19 @@
 package com.example.moriah.activities;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
 import com.example.moriah.R;
-import com.example.moriah.adapters.LunchAdapter;
-import com.example.moriah.model.Lunch;
+import com.example.moriah.adapters.DrinksAdapter;
+import com.example.moriah.model.SoftDrinks;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
@@ -25,67 +25,67 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LunchActivity extends AppCompatActivity {
+public class SoftDrinksActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference databaseReference;
 
-    RecyclerView recycler_lunch;
+    RecyclerView recycler_drinks;
     RecyclerView.LayoutManager layoutManager;
 
-    private LunchAdapter lunchAdapter;
-    private List<Lunch> lunchList = new ArrayList<>();
+    private DrinksAdapter drinksAdapter;
+    private List<SoftDrinks> drinksList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lunch);
+        setContentView(R.layout.activity_soft_drinks);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Delights Menu");
+        toolbar.setTitle("Drinks Menu");
         setSupportActionBar(toolbar);
+        FloatingActionButton fab = findViewById(R.id.fabdrink);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(SoftDrinksActivity.this,CartActivity.class);
+                startActivity(intent);
+            }
+        });
 
-//        FloatingActionButton fab = findViewById(R.id.fablunch);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent= new Intent(LunchActivity.this,CartActivity.class);
-//                startActivity(intent);
-//            }
-//        });
 
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("Delights");
+        databaseReference = database.getReference("Softdrinks");
 
 
 
 
-        lunchAdapter= new LunchAdapter(this, lunchList);
+        drinksAdapter= new DrinksAdapter(this, drinksList);
 
         //load menu
-        recycler_lunch = findViewById(R.id.recycler_lunch);
-        recycler_lunch.setHasFixedSize(true);
+        recycler_drinks = findViewById(R.id.recycler_drink);
+        recycler_drinks .setHasFixedSize(true);
         layoutManager = new GridLayoutManager(this, 2);
-        recycler_lunch.setLayoutManager(layoutManager);
-        recycler_lunch.setAdapter(lunchAdapter);
-        loadLunch();
+        recycler_drinks .setLayoutManager(layoutManager);
+        recycler_drinks .setAdapter(drinksAdapter);
+        loadDrinks();
 
     }
 
-    private void loadLunch(){
-        if(lunchList.size() >0){
-          lunchList.clear();
+    private void loadDrinks(){
+        if(drinksList.size() >0){
+           drinksList.clear();
         }
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for (DataSnapshot mdataSnapshot : dataSnapshot.getChildren()){
-                     Lunch lunch = mdataSnapshot.getValue(Lunch.class);
-                       lunchList.add(lunch);
+                       SoftDrinks softDrinks= mdataSnapshot.getValue(SoftDrinks.class);
+                       drinksList.add(softDrinks);
                     }
 
 
                 }
-                //Toast.makeText(LunchActivity.this, "" + lunchList.size(), Toast.LENGTH_LONG).show();
-                lunchAdapter.notifyDataSetChanged();
+                Toast.makeText(SoftDrinksActivity.this, "" + drinksList.size(), Toast.LENGTH_LONG).show();
+                drinksAdapter.notifyDataSetChanged();
             }
 
             @Override

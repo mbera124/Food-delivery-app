@@ -2,9 +2,9 @@ package com.example.moriah.model;
 
 public class Lunch {
      private String Name;
-     private String   Image;
-     private String   MenuId;
-     private String   Price;
+     private String Image;
+     private String MenuId;
+     private String Price;
 
      public Lunch() {
      }

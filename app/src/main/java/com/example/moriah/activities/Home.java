@@ -18,6 +18,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +35,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ public class Home extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     FirebaseDatabase database;
+
 
     DatabaseReference databaseReference;
   //  TextView txtfullname;
@@ -75,11 +78,16 @@ public class Home extends AppCompatActivity {
         //init firebase
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Category");
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(view -> {
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show();
+
+//        FloatingActionButton fab = findViewById(R.id.fabhome);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//               Intent intent= new Intent(Home.this,CartActivity.class);
+//               startActivity(intent);
+//            }
 //        });
+
 
         dl =  findViewById(R.id.drawer_layout);
         t = new ActionBarDrawerToggle(this, dl,R.string.navigation_drawer_open, R.string.navigation_drawer_close);

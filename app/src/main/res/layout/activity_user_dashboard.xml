@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@drawable/bg"
     tools:context=".activities.UserDashboard">
 
 
@@ -19,18 +19,31 @@
 
         <LinearLayout
             android:id="@+id/view"
-            android:layout_width="410dp"
-            android:layout_height="130dp"
-            android:background="@drawable/dashlogo"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
             android:orientation="vertical">
 
-        </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/aclonica"
+                android:gravity="bottom|center"
+                android:text="User Dashboard"
+                android:textAllCaps="true"
+                android:textColor="@color/White"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
 
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
+            android:layout_marginTop="50dp"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:weightSum="2">
@@ -40,6 +53,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
                 app:cardCornerRadius="2dp"
                 app:cardElevation="0dp">
 
@@ -74,6 +90,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
                 app:cardCornerRadius="2dp"
                 app:cardElevation="0dp">
 
@@ -118,6 +137,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:cardCornerRadius="2dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
                 app:cardElevation="0dp">
 
                 <RelativeLayout
@@ -149,6 +171,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:cardCornerRadius="2dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
                 app:cardElevation="0dp">
 
                 <RelativeLayout
@@ -191,6 +216,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:cardCornerRadius="2dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
                 app:cardElevation="0dp">
 
                 <RelativeLayout
@@ -221,6 +249,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:cardCornerRadius="2dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
                 app:cardElevation="0dp">
 
                 <RelativeLayout
@@ -246,7 +277,6 @@
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
-
     </LinearLayout>
 
 </RelativeLayout>

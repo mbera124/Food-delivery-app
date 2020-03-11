@@ -1,15 +1,17 @@
 package com.example.moriah.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moriah.R;
+import com.example.moriah.activities.FoodDetail;
 import com.example.moriah.model.Breakfast;
 import com.example.moriah.viewholders.BreakfastViewHolder;
 import com.squareup.picasso.Picasso;
@@ -20,10 +22,12 @@ public class BreakfastAdapter extends RecyclerView.Adapter<BreakfastViewHolder> 
 
     private List<Breakfast> breakfastList;
     private Context mContext;
+    private String TAG = "BreakfastAdapter";
 
     public BreakfastAdapter(Context context, List<Breakfast> breakfastList) {
         this.mContext = context;
         this.breakfastList = breakfastList;
+
     }
     @NonNull
     @Override
@@ -38,8 +42,62 @@ public class BreakfastAdapter extends RecyclerView.Adapter<BreakfastViewHolder> 
         holder.txtbreakfastname.setText(breakfast.getName());
         Picasso.get().load(breakfast.getImage()).placeholder(R.drawable.breakfast).into(holder.imageView);
 
-        holder.cvbreakfastitem.setOnClickListener(v -> Toast.makeText(mContext, "You just clicked" +" "+ breakfast.getName(),
-                Toast.LENGTH_SHORT).show());
+        holder.cvbreakfastitem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG,"onClick: clicked on: " + breakfastList.get(position));
+
+                if(!breakfast.getName().equals("")){
+                    if(breakfast.getName().toLowerCase().equals("coffee")){
+                        Intent intent = new Intent(mContext,FoodDetail.class);
+                        intent.putExtra("image_url",breakfast.getImage());
+                        intent.putExtra("item_name",breakfast.getName());
+                        intent.putExtra("item_price",breakfast.getPrice());
+                        mContext.startActivity(intent);
+                    }
+                    else if(breakfast.getName().toLowerCase().equals("omlette")){
+                        Intent intent = new Intent(mContext,FoodDetail.class);
+                        intent.putExtra("image_url",breakfast.getImage());
+                        intent.putExtra("item_name",breakfast.getName());
+                        intent.putExtra("item_price",breakfast.getPrice());
+                        mContext.startActivity(intent);
+                    }  else if(breakfast.getName().toLowerCase().equals("african tea")){
+                        Intent intent = new Intent(mContext, FoodDetail.class);
+                        intent.putExtra("image_url",breakfast.getImage());
+                        intent.putExtra("item_name",breakfast.getName());
+                        intent.putExtra("item_price",breakfast.getPrice());
+                        mContext.startActivity(intent);
+                    } else if(breakfast.getName().toLowerCase().equals("sausage")) {
+                        Intent intent = new Intent(mContext, FoodDetail.class);
+                        intent.putExtra("image_url", breakfast.getImage());
+                        intent.putExtra("item_name", breakfast.getName());
+                        intent.putExtra("item_price", breakfast.getPrice());
+                        mContext.startActivity(intent);
+                    }else if(breakfast.getName().toLowerCase().equals("pancake")) {
+                        Intent intent = new Intent(mContext, FoodDetail.class);
+                        intent.putExtra("image_url", breakfast.getImage());
+                        intent.putExtra("item_name", breakfast.getName());
+                        intent.putExtra("item_price", breakfast.getPrice());
+                        mContext.startActivity(intent);
+                    }
+
+                    else {
+                        if(breakfast.getName().toLowerCase().equals("smokie")) {
+                            Intent intent = new Intent(mContext, FoodDetail.class);
+                            intent.putExtra("image_url", breakfast.getImage());
+                            intent.putExtra("item_name", breakfast.getName());
+                            intent.putExtra("item_price", breakfast.getPrice());
+                            mContext.startActivity(intent);
+//                                                             Toast.makeText(mContext, "You just clicked" + " " + breakfast.getName(),
+//                                                                     Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+            }
+        });
+//
+
     }
 
     @Override

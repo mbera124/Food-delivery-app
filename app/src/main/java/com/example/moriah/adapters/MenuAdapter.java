@@ -2,22 +2,18 @@ package com.example.moriah.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moriah.R;
 import com.example.moriah.activities.BreakfastActivity;
-import com.example.moriah.activities.Login;
 import com.example.moriah.activities.LunchActivity;
-import com.example.moriah.activities.Signup;
-import com.example.moriah.model.Breakfast;
+import com.example.moriah.activities.SoftDrinksActivity;
 import com.example.moriah.model.Category;
 import com.example.moriah.viewholders.MenuViewHolder;
 import com.squareup.picasso.Picasso;
@@ -62,17 +58,22 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
                                                              intent.putExtra("image_name",category.getName());
                                                              mContext.startActivity(intent);
                                                          }
-                                                         else if(category.getName().toLowerCase().equals("lunch")){
+                                                         else if(category.getName().toLowerCase().equals("delights")){
                                                              Intent intent = new Intent(mContext, LunchActivity.class);
                                                              intent.putExtra("image_url",category.getImage());
                                                              intent.putExtra("image_name",category.getName());
                                                              mContext.startActivity(intent);
-                                                         } else {
-                                                             Toast.makeText(mContext, "You just clicked" + " " + category.getName(),
-                                                                     Toast.LENGTH_SHORT).show();
+                                                         }
+
+                                                         else {
+                                                             Intent intent = new Intent(mContext, SoftDrinksActivity.class);
+                                                             intent.putExtra("image_url",category.getImage());
+                                                             intent.putExtra("image_name",category.getName());
+                                                             mContext.startActivity(intent);
+//                                                             Toast.makeText(mContext, "You just clicked" + " " + category.getName(),
+//                                                                     Toast.LENGTH_SHORT).show();
                                                          }
                                                      }
-
 
                                                  }
                                              });
