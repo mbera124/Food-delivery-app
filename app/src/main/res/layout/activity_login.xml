@@ -6,7 +6,14 @@
     android:background="@drawable/login"
     android:layout_height="match_parent"
     tools:context=".activities.Login">
-
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="40dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        >
     <LinearLayout
         android:id="@+id/linearsignin"
         android:layout_width="match_parent"
@@ -14,8 +21,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="100dp"
-
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <com.rengwuxian.materialedittext.MaterialEditText
@@ -24,8 +30,8 @@
             android:layout_height="wrap_content"
             android:hint="Enter E-Mail"
             android:inputType="textEmailAddress"
-           android:textColor="@color/White"
-            android:textColorHint="@color/White"
+           android:textColor="@color/Black"
+            android:textColorHint="@color/Black"
             android:textSize="24sp"
             app:met_floatingLabel="highlight"
             app:met_singleLineEllipsis="true" />
@@ -36,12 +42,28 @@
             android:layout_height="wrap_content"
             android:hint="Password"
             android:inputType="textPassword"
-            android:textColor="@color/White"
-            android:textColorHint="@color/White"
+            android:textColor="@color/Black"
+            android:textColorHint="@color/Black"
             android:textSize="24sp"
             app:met_floatingLabel="highlight"
             app:met_singleLineEllipsis="true" />
-    </LinearLayout>
+        <Button
+            android:id="@+id/btnsignin"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="18dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/DeepSkyBlue"
+            android:text="Sign In"
+            android:textColor="@color/Black"
+            />
 
     <Button
         android:id="@+id/btnsignup"
@@ -53,8 +75,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="43dp"
-        android:layout_marginLeft="43dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginLeft="18dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="43dp"
         android:layout_marginRight="43dp"
@@ -63,24 +85,9 @@
         android:textColor="@color/Black"
          />
 
-    <Button
-        android:id="@+id/btnsignin"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_below="@+id/linearsignin"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="18dp"
-        android:layout_marginLeft="18dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@color/DeepSkyBlue"
-        android:text="Sign In"
-        android:textColor="@color/Black"
-        />
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 
 </RelativeLayout>

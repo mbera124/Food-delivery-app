@@ -1,9 +1,5 @@
 package com.example.moriah.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.moriah.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity {
@@ -36,9 +32,7 @@ Button btnsignin,btnsignup;
             startActivity(new Intent(Login.this, UserDashboard.class));
             finish();
         }
-        //init firebase
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        final DatabaseReference table_user = database.getReference("User");
+
 
         btnsignup.setOnClickListener(v -> {
             startActivity(new Intent(Login.this, Signup.class));
@@ -78,6 +72,9 @@ Button btnsignin,btnsignup;
                             }
 
                         } else {
+                            if(email.equalsIgnoreCase("administrator@gmail.com")){
+                                startActivity(new Intent(Login.this, OrdersActivity.class));
+                                finish();}
                             mDialog.dismiss();
                             Intent intent = new Intent(Login.this, UserDashboard.class);
                             startActivity(intent);

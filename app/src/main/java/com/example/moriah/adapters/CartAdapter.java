@@ -3,6 +3,7 @@ package com.example.moriah.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.moriah.R;
-import com.example.moriah.model.Breakfast;
 import com.example.moriah.model.Order;
-import com.example.moriah.viewholders.BreakfastViewHolder;
 import com.example.moriah.viewholders.CartViewHolder;
 
 import java.text.NumberFormat;
@@ -25,6 +24,7 @@ import java.util.Locale;
 public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
     private  static List<Order> listData= new ArrayList<>();
     private Context mContext;
+    private String TAG = "CartAdapter";
 
 
     public CartAdapter(List<Order> listData, Context mContext) {
@@ -51,10 +51,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
         int price=(Integer.parseInt(listData.get(position).getUnitPrice()))*(Integer.parseInt(listData.get(position).getQuantity()));
         holder.txtcartitemprice.setText(fmt.format(price));
         holder.txtcartitemname.setText(listData.get(position).getProductName());
+        holder.cvcartitem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG,"onClick: clicked on: " + listData.get(position));
+
+            }
+        });
+
     }
+
+
+
 
     @Override
     public int getItemCount() {
         return listData==null?0:listData.size();
     }
+
+
 }

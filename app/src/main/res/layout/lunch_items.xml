@@ -8,14 +8,18 @@
     app:cardElevation="4dp"
     android:id="@+id/cvlunchitem"
     android:layout_marginBottom="8dp"
-    >
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
+<!--    style="@style/MyCardView"-->
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="200dp"
             android:id="@+id/lunch_image"
             android:src="@drawable/breakfast"
             android:scaleType="centerCrop"/>

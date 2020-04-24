@@ -7,20 +7,8 @@
     android:background="@drawable/background"
     tools:context=".activities.BreakfastActivity"
     android:orientation="vertical">
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:id="@+id/appbar">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_breakfast"
@@ -39,7 +27,7 @@
         android:layout_marginRight="7dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="@color/White"
-        app:srcCompat="@drawable/cart"
+        app:srcCompat="@drawable/ic_add_circle_black_24dp"
         tools:ignore="UnusedAttribute,VectorDrawableCompat"
         />
 

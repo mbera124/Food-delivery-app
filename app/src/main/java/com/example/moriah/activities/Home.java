@@ -1,23 +1,25 @@
 package com.example.moriah.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.example.moriah.R;
-import com.example.moriah.adapters.MenuAdapter;
-import com.example.moriah.model.Breakfast;
-import com.example.moriah.model.Category;
-import com.example.moriah.model.PrefManager;
-
-import android.provider.ContactsContract;
-import android.provider.Settings;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.view.GravityCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.ui.AppBarConfiguration;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.example.moriah.R;
+import com.example.moriah.adapters.MenuAdapter;
+import com.example.moriah.admin.AddCategory;
+import com.example.moriah.admin.EditOrders;
+import com.example.moriah.model.Category;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,17 +29,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.Menu;
-import android.view.View;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +36,8 @@ public class Home extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     FirebaseDatabase database;
-
-
+    ProgressDialog mProgressDialog;
+private FloatingActionButton fabmenu;
     DatabaseReference databaseReference;
   //  TextView txtfullname;
     RecyclerView recycler_menu;
@@ -67,27 +58,27 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        fabmenu=findViewById(R.id.addmenu);
+        fabmenu.setVisibility(View.GONE);
 
 
         auth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Menu");
         setSupportActionBar(toolbar);
+        if (auth.getCurrentUser().getEmail().equals("administrator@gmail.com")){
+            fabmenu.setVisibility(View.VISIBLE);
+        }
+        if(categoryList.size() >0){
+            categoryList.clear();
+        }
 
 
         //init firebase
+
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("Category");
-
-//        FloatingActionButton fab = findViewById(R.id.fabhome);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//               Intent intent= new Intent(Home.this,CartActivity.class);
-//               startActivity(intent);
-//            }
-//        });
-
+        //database.setPersistenceEnabled(true);
+        databaseReference = database.getReference("Menu");
 
         dl =  findViewById(R.id.drawer_layout);
         t = new ActionBarDrawerToggle(this, dl,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -95,6 +86,12 @@ public class Home extends AppCompatActivity {
         t.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         nv =findViewById(R.id.nv);
+        fabmenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Home.this, AddCategory.class));
+            }
+        });
 
         nv.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -113,8 +110,12 @@ public class Home extends AppCompatActivity {
                     finish();
                     return true;
                 case R.id.nav_orders:
+                    if (auth.getCurrentUser().getEmail().equals("administrator@gmail.com")){
+                        startActivity(new Intent(this, EditOrders.class));
+                    }else {
                     startActivity(new Intent(this, OrdersActivity.class));
                     finish();
+                    }
                     return true;
                 case R.id.nav_profile:
                     startActivity(new Intent(this, ProfileActivity.class));
@@ -131,30 +132,23 @@ public class Home extends AppCompatActivity {
             }
         });
 
-
-
-
-        //set name for user
-//        View headerView = navigationView.getHeaderView(0);
-//        txtfullname = findViewById(R.id.txtfullname);
-       // txtfullname.setText(FirebaseApp.getInstance);
-
-
         menuAdapter = new MenuAdapter(this, categoryList);
 
         //load menu
         recycler_menu = findViewById(R.id.recycler_menu);
         recycler_menu.setHasFixedSize(true);
-        layoutManager = new GridLayoutManager(this, 2);
+//        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+     RecyclerView.LayoutManager layoutManager=new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         recycler_menu.setLayoutManager(layoutManager);
+
         recycler_menu.setAdapter(menuAdapter);
-        loadMenu();
+//        loadMenu();
 
 
     }
 
     private void loadMenu() {
-
+        showProgressDialog();
 
       if(categoryList.size() >0){
           categoryList.clear();
@@ -162,6 +156,7 @@ public class Home extends AppCompatActivity {
       databaseReference.addValueEventListener(new ValueEventListener() {
           @Override
           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+              categoryList.clear();
               if(dataSnapshot.exists()){
                    for (DataSnapshot mdataSnapshot : dataSnapshot.getChildren()){
                        Category category = mdataSnapshot.getValue(Category.class);
@@ -170,29 +165,19 @@ public class Home extends AppCompatActivity {
 
 
               }
+              hideProgressDialog();
               //Toast.makeText(Home.this, "" + categoryList.size(), Toast.LENGTH_SHORT).show();
               menuAdapter.notifyDataSetChanged();
+
           }
 
           @Override
           public void onCancelled(@NonNull DatabaseError databaseError) {
-
+              hideProgressDialog();
           }
       });
 
     }
-
-//    @Override
-//    public void onBackPressed() {
-//
-//        if (dl.isDrawerOpen(GravityCompat.START)) {
-//            dl.closeDrawer(GravityCompat.START);
-//            super.onBackPressed();
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
-
 
 
     @Override
@@ -202,6 +187,28 @@ public class Home extends AppCompatActivity {
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
+        mProgressDialog.show();
+    }
+
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadMenu();
     }
 }
 

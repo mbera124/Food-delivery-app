@@ -1,15 +1,15 @@
 package com.example.moriah.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.example.moriah.R;
+import com.example.moriah.admin.EditOrders;
 import com.example.moriah.model.PrefManager;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -75,11 +75,6 @@ public class UserDashboard extends AppCompatActivity {
                 cardSignoutClicked();
             }
         });
-
-
-
-
-
     }
 
     public void  cardMenuClicked() {
@@ -89,7 +84,6 @@ public class UserDashboard extends AppCompatActivity {
             cardMenu.animate().alphaBy(10);
             cardMenu.setRadius(20);
             cardMenu.setPadding(2, 2, 2, 2);
-
             cardOrders.setCardElevation(0);
             cardOrders.setRadius(0);
             cardProfile.setCardElevation(0);
@@ -102,16 +96,12 @@ public class UserDashboard extends AppCompatActivity {
             cardAbout.setRadius(0);
 
             startActivity(new Intent(UserDashboard.this, Home.class));
-
-
     }
 
     public void cardOrdersClicked() {
-
             cardOrders.setCardElevation(15);
             cardOrders.animate().rotationBy(360);
             cardOrders.setRadius(20);
-
             cardMenu.setCardElevation(0);
             cardMenu.setRadius(0);
             cardProfile.setCardElevation(0);
@@ -122,20 +112,20 @@ public class UserDashboard extends AppCompatActivity {
             cardSignout.setRadius(0);
             cardAbout.setCardElevation(0);
             cardAbout.setRadius(0);
-
-            Intent i = new Intent(getApplicationContext(),OrdersActivity.class);
+        if (auth.getCurrentUser().getEmail().equals("administrator@gmail.com")){
+            Intent i = new Intent(getApplicationContext(), EditOrders.class);
             startActivity(i);
-
-
+        }else {
+            Intent i = new Intent(getApplicationContext(), OrdersActivity.class);
+            startActivity(i);
+        }
     }
 
     public void cardProfileClicked() {
-
             cardProfile.setCardElevation(15);
             // cardApartments.animate().rotationBy(360);
             cardProfile.animate().alphaBy(10);
             cardProfile.setRadius(20);
-
             cardMenu.setCardElevation(0);
             cardMenu.setRadius(0);
             cardOrders.setCardElevation(0);
@@ -157,12 +147,10 @@ public class UserDashboard extends AppCompatActivity {
     }
 
     public void cardNotificationsClicked() {
-
             cardNotifications.setCardElevation(15);
             // cardSales.animate().rotationBy(360);
             cardNotifications.animate().alphaBy(10);
             cardNotifications.setRadius(20);
-
             cardMenu.setCardElevation(0);
             cardMenu.setRadius(0);
             cardOrders.setCardElevation(0);
@@ -173,20 +161,15 @@ public class UserDashboard extends AppCompatActivity {
             cardSignout.setRadius(0);
             cardAbout.setCardElevation(0);
             cardAbout.setRadius(0);
-
             Intent i = new Intent(getApplicationContext(),NotificationsActivity.class);
             startActivity(i);
 
     }
-
-
     public void cardSignoutClicked() {
-
             cardSignout.setCardElevation(15);
             //cardSignout.animate().rotationBy(360);
             cardSignout.animate().alphaBy(10);
             cardSignout.setRadius(20);
-
             cardMenu.setCardElevation(0);
             cardMenu.setRadius(0);
             cardOrders.setCardElevation(0);
@@ -197,23 +180,17 @@ public class UserDashboard extends AppCompatActivity {
             cardNotifications.setRadius(0);
             cardAbout.setCardElevation(0);
             cardAbout.setRadius(0);
-
-
              auth.signOut();
             Intent i = new Intent(getApplicationContext(),Login.class);
             startActivity(i);
-
-
     }
 
 
     public void cardAboutClicked() {
-
             cardAbout.setCardElevation(15);
             //cardAbout.animate().rotationBy(360);
             cardAbout.animate().alphaBy(10);
             cardAbout.setRadius(20);
-
             cardMenu.setCardElevation(0);
             cardMenu.setRadius(0);
             cardOrders.setCardElevation(0);
@@ -224,11 +201,8 @@ public class UserDashboard extends AppCompatActivity {
             cardNotifications.setRadius(0);
             cardSignout.setCardElevation(0);
             cardSignout.setRadius(0);
-
             Intent i = new Intent(getApplicationContext(), AboutUsActivity.class);
             startActivity(i);
-
-
 
     }
 

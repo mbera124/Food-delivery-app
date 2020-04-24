@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@drawable/background"
     tools:context=".activities.UserDashboard">
 
 
@@ -16,42 +16,63 @@
         android:layout_marginRight="1dp"
         android:orientation="vertical"
         android:weightSum="3">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="40dp"
+            >
+
 
         <LinearLayout
             android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/dashboard"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/aclonica"
-                android:gravity="bottom|center"
-                android:text="User Dashboard"
-                android:textAllCaps="true"
-                android:textColor="@color/White"
-                android:textSize="40sp"
-                android:textStyle="bold"
-                android:typeface="sans" />
 
         </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="700dp"
+            app:cardCornerRadius="35dp"
+            android:layout_marginTop="10dp"
+
+            >
+<!--            <ImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:src="@drawable/nav"-->
+<!--                android:layout_marginTop="10dp" />-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+
+                >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="147dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:layout_marginTop="50dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:weightSum="2"
+            android:id="@+id/layoutmenu">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardMenu"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
@@ -61,25 +82,29 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="150dp">
 
                     <ImageView
                         android:id="@+id/menuicon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerVertical="true"
+                       android:layout_marginStart="30dp"
+                        android:src="@drawable/menu"
                         android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:scaleType="center"
-                        android:src="@drawable/menu" />
+                        android:layout_marginLeft="30dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/menuicon"
-                        android:layout_centerInParent="true"
                         android:text="MENU"
+                        android:gravity="center"
+                        android:layout_centerInParent="true"
                         android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginLeft="40dp" />
 
                 </RelativeLayout>
 
@@ -88,7 +113,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardOrders"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
@@ -98,23 +123,25 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="150dp">
 
                     <ImageView
                         android:id="@+id/ordersicon"
-                        android:layout_width="122dp"
-                        android:layout_height="108dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/order" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/ordersicon"
-                        android:layout_centerInParent="true"
+                      android:layout_below="@+id/ordersicon"
                         android:text="MY ORDERS"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:textColor="@color/Black"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginLeft="40dp" />
                 </RelativeLayout>
 
 
@@ -124,12 +151,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="147dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:weightSum="2"
+            android:id="@+id/layoutprofile"
+            android:layout_below="@+id/layoutmenu">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardProfile"
@@ -148,8 +177,8 @@
 
                     <ImageView
                         android:id="@+id/profileicon"
-                        android:layout_width="122dp"
-                        android:layout_height="108dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/profile" />
 
@@ -182,8 +211,8 @@
 
                     <ImageView
                         android:id="@+id/notificationsicon"
-                        android:layout_width="122dp"
-                        android:layout_height="108dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/notification" />
 
@@ -203,12 +232,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="147dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:weightSum="2"
+            android:layout_below="@+id/layoutprofile">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardAbout"
@@ -227,8 +257,8 @@
 
                     <ImageView
                         android:id="@+id/abouticon"
-                        android:layout_width="122dp"
-                        android:layout_height="108dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/aboutus" />
 
@@ -260,8 +290,8 @@
 
                     <ImageView
                         android:id="@+id/exiticon"
-                        android:layout_width="122dp"
-                        android:layout_height="108dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/exit" />
 
@@ -277,6 +307,8 @@
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,0 +1,24 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=F4:3D:EC:53:5D:53:A3:E5:32:89:F7:14:F2:2C:30:A8:4A:14:31:75%3Bcom.example.moriah.activities
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    com.example.moriah.activities
+
+    SHA-1 certificate fingerprint:
+    F4:3D:EC:53:5D:53:A3:E5:32:89:F7:14:F2:2C:30:A8:4A:14:31:75
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCwEd3yJcv25-dC3m7IFFUJU4hzQ2pDFBg</string>
+</resources>

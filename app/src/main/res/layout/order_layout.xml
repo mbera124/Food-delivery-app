@@ -47,8 +47,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/order_name"
-                android:text="name"
+                android:id="@+id/order_contact"
+                android:text="0123456789"
                 android:textAllCaps="true"
                 android:textStyle="italic"
                 android:textSize="20sp"
@@ -58,8 +58,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/order_address"
-                android:text="Address"
+                android:id="@+id/order_location"
+                android:text="location"
+                android:textAllCaps="true"
+                android:textStyle="italic"
+                android:textSize="20sp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                android:layout_marginStart="10dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/order_price"
+                android:text="price"
                 android:textAllCaps="true"
                 android:textStyle="italic"
                 android:textSize="20sp"

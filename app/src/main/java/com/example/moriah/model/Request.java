@@ -1,12 +1,10 @@
 package com.example.moriah.model;
 
-import com.google.firebase.database.DatabaseReference;
-
 import java.util.List;
 
 public class Request {
     private  String name;
-    private String address;
+    private String contact;
     private String total;
     private String status;
     private String ProductId;
@@ -14,24 +12,26 @@ public class Request {
     private String UnitPrice;
     private String Quantity;
     private String totalOrderPrice;
+    private String txtLocationResult;
+    private String key;
+    private String userIdkey;
     private List<Order> foods;
 
     public Request() {
     }
-
-    //    public Request(String s, String phone, String key, List<Order> orderList) {
-//    }
-
-    public Request(String name, String address,String total,String productName, String unitPrice, String quantity, String totalOrderPrice) {
+    public Request(String name, String contact,String total,String productName, String unitPrice, String quantity, String totalOrderPrice,String txtLocationResult, String key, String userIdkey) {
 
         this.name = name;
-        this.address = address;
+        this.contact = contact;
         this.total = total;
         this.ProductName = productName;
         this.UnitPrice = unitPrice;
         this.Quantity = quantity;
         this.totalOrderPrice = totalOrderPrice;
+        this.txtLocationResult=txtLocationResult;
+        this.key=key;
         this.status = "0";
+        this.userIdkey = userIdkey;
 
     }
 
@@ -43,12 +43,12 @@ public class Request {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
+    public String getContact() {
+        return contact;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setContact(String address) {
+        this.contact = address;
     }
 
     public String getTotal() {
@@ -115,4 +115,27 @@ public class Request {
         this.totalOrderPrice = totalOrderPrice;
     }
 
+    public String getTxtLocationResult() {
+        return txtLocationResult;
+    }
+
+    public void setTxtLocationResult(String txtLocationResult) {
+        this.txtLocationResult = txtLocationResult;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getUserIdkey() {
+        return userIdkey;
+    }
+
+    public void setUserIdkey(String userIdkey) {
+        this.userIdkey = userIdkey;
+    }
 }

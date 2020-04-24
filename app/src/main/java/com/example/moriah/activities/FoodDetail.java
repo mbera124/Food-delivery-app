@@ -1,12 +1,12 @@
 package com.example.moriah.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.moriah.R;
@@ -18,7 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 public class FoodDetail extends AppCompatActivity {
-TextView food_name,food_price;
+TextView food_name,food_price,tvdescription;
 ImageView food_image;
 CollapsingToolbarLayout collapsingToolbarLayout;
 FloatingActionButton btncart;
@@ -27,9 +27,6 @@ ElegantNumberButton numberButton;
 String foodPrice="", foodName=" ", imageUrl="";
 FirebaseDatabase database;
 DatabaseReference databaseReference;
-//String foodId="";
-//private CartAdapter cartAdapter;
-//    private List<Order> orderList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,20 +34,17 @@ DatabaseReference databaseReference;
         setContentView(R.layout.activity_food_detail);
 
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("Breakfast");
-        databaseReference = database.getReference("Delights");
-        databaseReference = database.getReference("Soft Drinks");
+        databaseReference = database.getReference("Menu");
+//        databaseReference = database.getReference("Delights");
+//        databaseReference = database.getReference("Soft Drinks");
 
         numberButton=findViewById(R.id.number_button);
         btncart=findViewById(R.id.btnfood);
 
-     food_name=findViewById(R.id.food_name);
+        food_name=findViewById(R.id.food_name);
         food_price=findViewById(R.id.food_price);
         food_image=findViewById(R.id.food_image);
-
-//        collapsingToolbarLayout=findViewById(R.id.collapsing);
-//        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
-//        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppbar);
+        tvdescription=findViewById(R.id.tvdescription);
 
 btncart.setOnClickListener(new View.OnClickListener() {
     @Override
@@ -96,24 +90,6 @@ btncart.setOnClickListener(new View.OnClickListener() {
         food_name.setText(foodName);
         Picasso.get().load(imageUrl).placeholder(R.drawable.strawberry).into(food_image);
 
-
-       /** databaseReference.child(foodId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Breakfast breakfast=dataSnapshot.getValue(Breakfast.class);
-                //set image
-                // Picasso.get().load(breakfast.getImage()).placeholder(R.drawable.strawberry).into(food_image);
-
-                collapsingToolbarLayout.setTitle(breakfast.getName());
-                food_price.setText(breakfast.getPrice());
-                food_name.setText(breakfast.getName());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        }); **/
     }
 
 

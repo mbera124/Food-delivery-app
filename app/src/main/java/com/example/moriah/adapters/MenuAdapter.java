@@ -11,14 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moriah.R;
-import com.example.moriah.activities.BreakfastActivity;
-import com.example.moriah.activities.LunchActivity;
-import com.example.moriah.activities.SoftDrinksActivity;
+import com.example.moriah.activities.FoodDetail;
 import com.example.moriah.model.Category;
 import com.example.moriah.viewholders.MenuViewHolder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.List;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
 
@@ -44,7 +45,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
 
        Category category = categoryList.get(position);
        holder.txtmenuname.setText(category.getName());
-        Picasso.get().load(category.getImage()).placeholder(R.drawable.raspberry).into(holder.imageView);
+        final int radius = 40;
+        final int margin = 0;
+        final Transformation transformation = new RoundedCornersTransformation(radius, margin);
+        Picasso.get().load(category.getImage()).fit().centerCrop().placeholder(R.drawable.raspberry).transform(transformation).into(holder.imageView);
 
         holder.cvMenuItem.setOnClickListener(new View.OnClickListener() {
                                                  @Override
@@ -52,41 +56,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuViewHolder> {
                                                      Log.d(TAG,"onClick: clicked on: " + categoryList.get(position));
 
                                                      if(!category.getName().equals("")){
-                                                         if(category.getName().toLowerCase().equals("breakfast")){
-                                                             Intent intent = new Intent(mContext, BreakfastActivity.class);
+                                                             Intent intent = new Intent(mContext, FoodDetail.class);
                                                              intent.putExtra("image_url",category.getImage());
                                                              intent.putExtra("image_name",category.getName());
+                                                             intent.putExtra("item_price",category.getPrice());
                                                              mContext.startActivity(intent);
                                                          }
-                                                         else if(category.getName().toLowerCase().equals("delights")){
-                                                             Intent intent = new Intent(mContext, LunchActivity.class);
-                                                             intent.putExtra("image_url",category.getImage());
-                                                             intent.putExtra("image_name",category.getName());
-                                                             mContext.startActivity(intent);
-                                                         }
-
-                                                         else {
-                                                             Intent intent = new Intent(mContext, SoftDrinksActivity.class);
-                                                             intent.putExtra("image_url",category.getImage());
-                                                             intent.putExtra("image_name",category.getName());
-                                                             mContext.startActivity(intent);
-//                                                             Toast.makeText(mContext, "You just clicked" + " " + category.getName(),
-//                                                                     Toast.LENGTH_SHORT).show();
-                                                         }
-                                                     }
-
                                                  }
                                              });
-//
-
-
-//        Intent intent=new Intent(mContext,BreakfastActivity.class);
-//        intent.putExtra("image_url",category.getImage());
-//        intent.putExtra("image_name",category.getName());
-//        mContext.startActivity(intent);
-
-
-
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.example.moriah.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +7,8 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.moriah.R;
 import com.example.moriah.model.PrefManager;
@@ -33,9 +33,6 @@ public class Signup extends AppCompatActivity {
         prefManager = new PrefManager(this);
 
         auth = FirebaseAuth.getInstance();
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        final DatabaseReference table_user = database.getReference("User");
 
         btnsignin.setOnClickListener(v -> {
             startActivity(new Intent(Signup.this, Login.class));
@@ -78,10 +75,6 @@ public class Signup extends AppCompatActivity {
                 edtpassword.setError("Enter Strong Password");
 
             }
-//
-//            final ProgressDialog mDialog = new ProgressDialog(Signup.this);
-//            mDialog.setMessage("Creating Account...");
-//            mDialog.show();
 
             //create user
             auth.createUserWithEmailAndPassword(email, password)

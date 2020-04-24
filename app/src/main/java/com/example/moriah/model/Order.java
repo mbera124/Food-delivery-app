@@ -9,6 +9,7 @@ public class Order {
     private String UnitPrice;
     private String Quantity;
     private String totalOrderPrice;
+    private String key;
 
     public static List<Order> orderList = new ArrayList<>();
 
@@ -73,5 +74,13 @@ public class Order {
     public static void addOrder(Order order){
         orderList.add(order);
 
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

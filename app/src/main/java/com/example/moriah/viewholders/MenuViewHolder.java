@@ -21,10 +21,12 @@ public class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     public MenuViewHolder(@NonNull View itemView) {
         super(itemView);
+
         txtmenuname=itemView.findViewById(R.id.menu_name);
         imageView=itemView.findViewById(R.id.menu_image);
-        cvMenuItem = itemView.findViewById(R.id.cvMenuItem);
+       cvMenuItem = itemView.findViewById(R.id.cvMenuItem);
 
+//        cvMenuItem.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
         //itemView.setOnClickListener(this);
     }
     public void setItemClickListener(ItemClickListener itemClickListener){
