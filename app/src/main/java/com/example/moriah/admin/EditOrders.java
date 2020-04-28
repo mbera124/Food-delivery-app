@@ -53,7 +53,7 @@ private int Selecteditem=0;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_orders);
 //        Toast.makeText(this, "orders,", Toast.LENGTH_LONG).show();
-        auth = FirebaseAuth.getInstance();
+//        auth = FirebaseAuth.getInstance();
 
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests");

@@ -1,209 +1,368 @@
 package com.example.moriah.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.moriah.R;
+import com.example.moriah.adapters.BreakfastAdapter;
+import com.example.moriah.adapters.CategoryAdapter;
+import com.example.moriah.adapters.LunchAdapter;
+import com.example.moriah.adapters.SoftDrinksAdapter;
 import com.example.moriah.admin.EditOrders;
+import com.example.moriah.model.Breakfast;
+import com.example.moriah.model.Category;
+import com.example.moriah.model.Lunch;
 import com.example.moriah.model.PrefManager;
+import com.example.moriah.model.SoftDrinks;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class UserDashboard extends AppCompatActivity {
-    CardView cardMenu, cardOrders, cardProfile, cardNotifications, cardAbout, cardSignout;
+import java.util.ArrayList;
+import java.util.List;
+
+public class UserDashboard extends AppCompatActivity implements CategoryAdapter.onItemClicklistener {
+    CardView cardViewtop, cardViewbreakfast, cardProfile, cardNotifications, cardAbout, cardSignout;
+    FloatingActionButton btncart;
     PrefManager prefManager;
     private FirebaseAuth auth;
+    FirebaseDatabase database;
+    DatabaseReference databaseReference, databasebreakfastReference,databaselunchReference,databasedrinksReference ;
+    RecyclerView recycler_category,recycler_breakfast;
+    RecyclerView.LayoutManager layoutManager;
+    private CategoryAdapter categoryAdapter;
+    private BreakfastAdapter breakfastAdapter;
+    private LunchAdapter lunchAdapter;
+    private SoftDrinksAdapter softDrinksAdapter;
+    private List<Category> categoryList = new ArrayList<>();
+    private List<Breakfast> breakfastList = new ArrayList<>();
+    private List<Lunch> lunchList = new ArrayList<>();
+    private List<SoftDrinks> softDrinksList = new ArrayList<>();
+    TextView tvname;
+    ImageView imgprofile,imgedit,imgexit;
+    BottomNavigationView bottomNavigationView;
+    private static final String TAG = "UserDashboard";
+    private static final String ARG_NAME = "username";
+
+      GoogleSignInClient googleSignInClient;
+
+//    View separator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_dashboard);
-        cardMenu = findViewById(R.id.cardMenu);
-        cardOrders= findViewById(R.id.cardOrders);
-        cardProfile = findViewById(R.id.cardProfile);
-        cardNotifications = findViewById(R.id.cardNotifications);
-        cardAbout = findViewById(R.id.cardAbout);
-        cardSignout = findViewById(R.id.cardsignout);
+        cardViewtop = findViewById(R.id.cardViewtop);
+        cardViewbreakfast = findViewById(R.id.cardviewbreakfast);
+//        cardProfile = findViewById(R.id.cardProfile);
+//        cardNotifications = findViewById(R.id.cardNotifications);
+//        cardAbout = findViewById(R.id.cardAbout);
+//        cardSignout = findViewById(R.id.cardsignout);
+        tvname=findViewById(R.id.tvprofilename);
+        imgedit=findViewById(R.id.tvedit);
+        imgexit=findViewById(R.id.tvsignout);
+        imgprofile=findViewById(R.id.imgudprifile);
+
+        imgedit.setOnClickListener(v -> {
+            startActivity(new Intent(UserDashboard.this, ProfileActivity.class));
+            finish();
+        });
+        imgexit.setOnClickListener(v -> {
+            SignOut();
+            startActivity(new Intent(UserDashboard.this, Login.class));
+            finish();
+        });
+
+        googleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN);
+
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();
+
+            Log.e(TAG, "Name: " + personName + ", email: " + personEmail
+                    + ", Image: " + personPhoto);
+
+            tvname.setText(personName);
+            Glide.with(getApplicationContext()).load(personPhoto)
+                    .thumbnail(0.5f)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgprofile);
+        }
+//            tvname.setText(auth.getCurrentUser().getEmail());
+
+
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_menu:
+                        startActivity(new Intent(getApplicationContext(), UserDashboard.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    case R.id.navigation_cart:
+                        startActivity(new Intent(getApplicationContext(), CartActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    case R.id.navigation_orders:
+                        if (acct.getEmail().equals("josephmbera124@gmail.com")) {
+                            startActivity(new Intent(getApplicationContext(), EditOrders.class));
+                        }else{
+                            startActivity(new Intent(getApplicationContext(), OrdersActivity.class));
+                            overridePendingTransition(0,0);}
+                        finish();
+                        break;
+                    case R.id.navigation_about:
+                        startActivity(new Intent(getApplicationContext(), AboutUsActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                       default:
+                        return true;
+                }
+                return true;
+            }
+        });
+
 
         prefManager = new PrefManager(this);
 
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
-            Toast.makeText(UserDashboard.this, "Welcome back "+" "+ prefManager.getUserName()+" ", Toast.LENGTH_LONG).show();
+            Toast.makeText(UserDashboard.this, "Welcome back " + " " + acct.getDisplayName() + " ", Toast.LENGTH_LONG).show();
         }
+//        btncart.setOnClickListener(v -> {
+//            startActivity(new Intent(UserDashboard.this, CartActivity.class));
+//            finish();
+//        });
 
-          cardMenu.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  cardMenuClicked();
-              }
-          });
-        cardOrders.setOnClickListener(new View.OnClickListener() {
+        database = FirebaseDatabase.getInstance();
+        //database.setPersistenceEnabled(true);
+        databaseReference = database.getReference("Category");
+
+
+        //load category
+        categoryAdapter = new CategoryAdapter(this, categoryList, this);
+        recycler_category = findViewById(R.id.recycler_category);
+        recycler_category.setHasFixedSize(true);
+        //        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
+        recycler_category.setLayoutManager(layoutManager);
+        recycler_category.setAdapter(categoryAdapter);
+        loadCategory();
+
+        databasebreakfastReference = database.getReference("Breakfast");
+        databaselunchReference = database.getReference("Delights");
+        databasedrinksReference = database.getReference("Softdrinks");
+//breakfast
+        breakfastAdapter = new BreakfastAdapter(this, breakfastList);
+        recycler_breakfast = findViewById(R.id.recycler_breakfastdash);
+        recycler_breakfast.setHasFixedSize(true);
+        recycler_breakfast.setNestedScrollingEnabled(false);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+//       RecyclerView.LayoutManager layoutManagerb = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL,false);
+        recycler_breakfast.setLayoutManager(staggeredGridLayoutManager);
+        recycler_breakfast.setAdapter(breakfastAdapter);
+       loadBreakfast();
+    }
+
+    private void SignOut() {
+        // Firebase sign out
+        auth.signOut();
+
+        // Google sign out
+        googleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // Google Sign In failed, update UI appropriately
+                        Log.w(TAG, "Signed out of google");
+                        startActivity(new Intent(UserDashboard.this, Login.class));
+                        finish();
+                    }
+                });
+    }
+
+
+    private void loadBreakfast() {
+        if (breakfastList.size() > 0) {
+            breakfastList.clear();
+        }
+        databasebreakfastReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                cardOrdersClicked();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                breakfastList.clear();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot mdataSnapshot : dataSnapshot.getChildren()) {
+                        Breakfast breakfast = mdataSnapshot.getValue(Breakfast.class);
+                        breakfastList.add(breakfast);
+                    }
+                }
+//                hideProgressDialog();
+                Toast.makeText(UserDashboard.this, "" + breakfastList.size(), Toast.LENGTH_SHORT).show();
+                breakfastAdapter.notifyDataSetChanged();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void loadDelights() {
+        if (breakfastList.size() > 0) {
+            breakfastList.clear();
+        }
+        databaselunchReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                breakfastList.clear();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot mdataSnapshot : dataSnapshot.getChildren()) {
+                        Lunch lunch = mdataSnapshot.getValue(Lunch.class);
+                        Breakfast breakfast = new Breakfast();
+                        breakfast.setName(lunch.getName());
+                        breakfast.setPrice(lunch.getPrice());
+                        breakfast.setImage(lunch.getImage());
+                        breakfast.setDescription(lunch.getDescription());
+                        breakfastList.add(breakfast);
+                    }
+                }
+//                hideProgressDialog();
+                Toast.makeText(UserDashboard.this, "" + breakfastList.size(), Toast.LENGTH_SHORT).show();
+                breakfastAdapter.notifyDataSetChanged();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void loadSoftDrinks() {
+        if (breakfastList.size() > 0) {
+            breakfastList.clear();
+        }
+      databasedrinksReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                breakfastList.clear();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot mdataSnapshot : dataSnapshot.getChildren()) {
+                        SoftDrinks softDrinks = mdataSnapshot.getValue(SoftDrinks.class);
+                        Breakfast breakfast = new Breakfast();
+                        breakfast.setName(softDrinks.getName());
+                        breakfast.setPrice(softDrinks.getPrice());
+                        breakfast.setImage(softDrinks.getImage());
+                        breakfast.setDescription(softDrinks.getDescription());
+                        breakfastList.add(breakfast);
+                    }
+                }
+//                hideProgressDialog();
+                Toast.makeText(UserDashboard.this, "" + breakfastList.size(), Toast.LENGTH_SHORT).show();
+                breakfastAdapter.notifyDataSetChanged();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
-        cardProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cardProfileClicked();
-            }
-        });
 
-        cardNotifications.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cardNotificationsClicked();
-            }
-        });
+    }
 
-        cardAbout.setOnClickListener(new View.OnClickListener() {
+
+    private void loadCategory() {
+//        showProgressDialog();
+
+        if (categoryList.size() > 0) {
+            categoryList.clear();
+        }
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                cardAboutClicked();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                categoryList.clear();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot mdataSnapshot : dataSnapshot.getChildren()) {
+                        Category category = mdataSnapshot.getValue(Category.class);
+                        categoryList.add(category);
+                    }
+
+
+                }
+//                hideProgressDialog();
+                //Toast.makeText(Home.this, "" + categoryList.size(), Toast.LENGTH_SHORT).show();
+                categoryAdapter.notifyDataSetChanged();
             }
-        });
-        cardSignout.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
-            public void onClick(View v) {
-                cardSignoutClicked();
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
 
-    public void  cardMenuClicked() {
+    @Override
+    public void onItemClick(Category category) {
+        String name = category.getName();
+//        Toast.makeText(this, "just clicked", Toast.LENGTH_SHORT).show();
 
-            cardMenu.setCardElevation(15);
-            // cardHomes.animate().rotationBy(360);
-            cardMenu.animate().alphaBy(10);
-            cardMenu.setRadius(20);
-            cardMenu.setPadding(2, 2, 2, 2);
-            cardOrders.setCardElevation(0);
-            cardOrders.setRadius(0);
-            cardProfile.setCardElevation(0);
-            cardProfile.setRadius(0);
-            cardNotifications.setCardElevation(0);
-            cardNotifications.setRadius(0);
-            cardSignout.setCardElevation(0);
-            cardSignout.setRadius(0);
-            cardAbout.setCardElevation(0);
-            cardAbout.setRadius(0);
-
-            startActivity(new Intent(UserDashboard.this, Home.class));
-    }
-
-    public void cardOrdersClicked() {
-            cardOrders.setCardElevation(15);
-            cardOrders.animate().rotationBy(360);
-            cardOrders.setRadius(20);
-            cardMenu.setCardElevation(0);
-            cardMenu.setRadius(0);
-            cardProfile.setCardElevation(0);
-            cardProfile.setRadius(0);
-            cardNotifications.setCardElevation(0);
-            cardNotifications.setRadius(0);
-            cardSignout.setCardElevation(0);
-            cardSignout.setRadius(0);
-            cardAbout.setCardElevation(0);
-            cardAbout.setRadius(0);
-        if (auth.getCurrentUser().getEmail().equals("administrator@gmail.com")){
-            Intent i = new Intent(getApplicationContext(), EditOrders.class);
-            startActivity(i);
-        }else {
-            Intent i = new Intent(getApplicationContext(), OrdersActivity.class);
-            startActivity(i);
+        switch (name.toLowerCase()){
+            case "breakfast":
+                 loadBreakfast();
+                 break;
+            case "delights":
+                 loadDelights();
+                 break;
+            case "soft drinks":
+                loadSoftDrinks();
+                break;
+            default:
+                loadBreakfast();
         }
     }
-
-    public void cardProfileClicked() {
-            cardProfile.setCardElevation(15);
-            // cardApartments.animate().rotationBy(360);
-            cardProfile.animate().alphaBy(10);
-            cardProfile.setRadius(20);
-            cardMenu.setCardElevation(0);
-            cardMenu.setRadius(0);
-            cardOrders.setCardElevation(0);
-            cardOrders.setRadius(0);
-            cardNotifications.setCardElevation(0);
-            cardNotifications.setRadius(0);
-            cardSignout.setCardElevation(0);
-            cardSignout.setRadius(0);
-            cardAbout.setCardElevation(0);
-            cardAbout.setRadius(0);
-
-            Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-            startActivity(i);
-
-
-            //startActivity(new Intent(UserDashboardActivity.this, Apartments.class));
-
-
-    }
-
-    public void cardNotificationsClicked() {
-            cardNotifications.setCardElevation(15);
-            // cardSales.animate().rotationBy(360);
-            cardNotifications.animate().alphaBy(10);
-            cardNotifications.setRadius(20);
-            cardMenu.setCardElevation(0);
-            cardMenu.setRadius(0);
-            cardOrders.setCardElevation(0);
-            cardOrders.setRadius(0);
-            cardProfile.setCardElevation(0);
-            cardProfile.setRadius(0);
-            cardSignout.setCardElevation(0);
-            cardSignout.setRadius(0);
-            cardAbout.setCardElevation(0);
-            cardAbout.setRadius(0);
-            Intent i = new Intent(getApplicationContext(),NotificationsActivity.class);
-            startActivity(i);
-
-    }
-    public void cardSignoutClicked() {
-            cardSignout.setCardElevation(15);
-            //cardSignout.animate().rotationBy(360);
-            cardSignout.animate().alphaBy(10);
-            cardSignout.setRadius(20);
-            cardMenu.setCardElevation(0);
-            cardMenu.setRadius(0);
-            cardOrders.setCardElevation(0);
-            cardOrders.setRadius(0);
-            cardProfile.setCardElevation(0);
-            cardProfile.setRadius(0);
-            cardNotifications.setCardElevation(0);
-            cardNotifications.setRadius(0);
-            cardAbout.setCardElevation(0);
-            cardAbout.setRadius(0);
-             auth.signOut();
-            Intent i = new Intent(getApplicationContext(),Login.class);
-            startActivity(i);
-    }
-
-
-    public void cardAboutClicked() {
-            cardAbout.setCardElevation(15);
-            //cardAbout.animate().rotationBy(360);
-            cardAbout.animate().alphaBy(10);
-            cardAbout.setRadius(20);
-            cardMenu.setCardElevation(0);
-            cardMenu.setRadius(0);
-            cardOrders.setCardElevation(0);
-            cardOrders.setRadius(0);
-            cardProfile.setCardElevation(0);
-            cardProfile.setRadius(0);
-            cardNotifications.setCardElevation(0);
-            cardNotifications.setRadius(0);
-            cardSignout.setCardElevation(0);
-            cardSignout.setRadius(0);
-            Intent i = new Intent(getApplicationContext(), AboutUsActivity.class);
-            startActivity(i);
-
-    }
-
 }
+
+
+
+

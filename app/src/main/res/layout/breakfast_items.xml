@@ -2,36 +2,54 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="4dp"
+    app:cardElevation="0dp"
     android:id="@+id/cvbreakfastitem"
     android:layout_marginBottom="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginLeft="8dp"
-    android:layout_marginTop="8dp">
-    <RelativeLayout
+    android:layout_marginTop="8dp"
+    app:cardBackgroundColor="@android:color/transparent">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:orientation="vertical"
+        android:layout_gravity="center">
+    <RelativeLayout
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:id="@+id/cvbreakfastItem"
+        android:background="@drawable/squarebackground"
+        android:layout_gravity="center">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             android:id="@+id/breakfast_image"
             android:src="@drawable/breakfast"
-            android:scaleType="centerCrop"/>
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/breakfast_name"
-            android:text=" Food Name"
+            android:text="Breakfast"
             android:textColor="@color/Black"
-            android:background="@color/GreenYellow"
             android:textSize="20sp"
-            android:gravity="center"
+             android:layout_gravity="center_horizontal"
             android:layout_below="@id/breakfast_image"
            />
-    </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/breakfast_price"
+            android:text="Price"
+            android:textColor="@color/Black"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@id/breakfast_image"
+            />
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

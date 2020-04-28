@@ -19,7 +19,9 @@ public class Request {
 
     public Request() {
     }
-    public Request(String name, String contact,String total,String productName, String unitPrice, String quantity, String totalOrderPrice,String txtLocationResult, String key, String userIdkey) {
+    public Request(String name, String contact,String total,String productName, String unitPrice,
+                   String quantity, String totalOrderPrice,String txtLocationResult,
+                   String key, String userIdkey, String status) {
 
         this.name = name;
         this.contact = contact;
@@ -30,7 +32,7 @@ public class Request {
         this.totalOrderPrice = totalOrderPrice;
         this.txtLocationResult=txtLocationResult;
         this.key=key;
-        this.status = "0";
+        this.status = status;
         this.userIdkey = userIdkey;
 
     }

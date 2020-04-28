@@ -23,8 +23,7 @@
         app:itemIconTint="@android:color/black"
         app:itemTextColor="@android:color/black"
         app:headerLayout="@layout/nav_header"
-        android:background="@drawable/nav"
-        app:menu="@menu/navigation_menu"/>
+        android:background="@drawable/nav"/>
 
 
 

@@ -2,9 +2,13 @@ package com.example.moriah.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -14,9 +18,13 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 
 import com.example.moriah.R;
 import com.example.moriah.adapters.OrdersAdapter;
+import com.example.moriah.admin.EditOrders;
 import com.example.moriah.model.Request;
 import com.example.moriah.viewholders.OrdersViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -40,15 +48,60 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
     DatabaseReference requests;
     List<Request> foods = new ArrayList<>();
     OrdersAdapter ordersAdapter;
-
+    BottomNavigationView bottomNavigationView;
+    private static final String TAG = OrdersActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
-        auth = FirebaseAuth.getInstance();
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();
+            Log.e(TAG, "Name: " + personName + ", email: " + personEmail+ ",Id:"+ personId+ ", Image: " + personPhoto);
+        }
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_menu:
+                        startActivity(new Intent(getApplicationContext(), UserDashboard.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    case R.id.navigation_cart:
+                        startActivity(new Intent(getApplicationContext(), CartActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    case R.id.navigation_orders:
+                        if (acct.getEmail().equals("josephmbera124@gmail.com")) {
+                            startActivity(new Intent(getApplicationContext(), EditOrders.class));
+                        }else{
+                            startActivity(new Intent(getApplicationContext(), OrdersActivity.class));
+                            overridePendingTransition(0,0);}
+                        finish();
+                        break;
+                    case R.id.navigation_about:
+                        startActivity(new Intent(getApplicationContext(), AboutUsActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    default:
+                        return true;
+                }
+                return true;
+            }
+        });
+//        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        requests = database.getReference("Requests").child(auth.getUid());
+        requests = database.getReference("Requests").child(acct.getId());
         recyclerView = findViewById(R.id.listorders);
         ordersAdapter = new OrdersAdapter(foods, this,this);
         recyclerView.setHasFixedSize(true);
@@ -75,6 +128,7 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
                         if (postSnapShot != null) {
                             Request request = new Request();
                             request.setContact(postSnapShot.child("Contact").getValue().toString());
+                            request.setProductId(postSnapShot.child("Mkey").getValue().toString());
                             request.setStatus(postSnapShot.child("Status").getValue().toString());
                             request.setTotal(postSnapShot.child("OrderPrice").getValue().toString());
                             request.setTxtLocationResult(postSnapShot.child("Location").getValue().toString());

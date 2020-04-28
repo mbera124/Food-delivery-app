@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,19 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moriah.BuildConfig;
 import com.example.moriah.R;
 import com.example.moriah.adapters.CartAdapter;
+import com.example.moriah.admin.EditOrders;
 import com.example.moriah.model.Order;
 import com.example.moriah.model.Request;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -49,7 +51,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
@@ -67,9 +69,7 @@ import java.util.List;
 public class CartActivity extends AppCompatActivity {
     private static final String TAG = CartActivity.class.getSimpleName();
 
-    DrawerLayout dl;
-    private ActionBarDrawerToggle t;
-    private NavigationView nv;
+BottomNavigationView bottomNavigationView;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     TextView txttotalprice, txtLocationResult;
@@ -114,13 +114,60 @@ public class CartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();
+            Log.e(TAG, "Name: " + personName + ", email: " + personEmail+ ",Id:"+ personId+
+                    ", Image: " + personPhoto);
+        }
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_menu:
+                        startActivity(new Intent(getApplicationContext(), UserDashboard.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    case R.id.navigation_cart:
+                        startActivity(new Intent(getApplicationContext(), CartActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    case R.id.navigation_orders:
+                        if (acct.getEmail().equals("josephmbera124@gmail.com")) {
+                            startActivity(new Intent(getApplicationContext(), EditOrders.class));
+                        }else{
+                            startActivity(new Intent(getApplicationContext(), OrdersActivity.class));
+                            overridePendingTransition(0,0);}
+                        finish();
+                        break;
+                    case R.id.navigation_about:
+                        startActivity(new Intent(getApplicationContext(), AboutUsActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    default:
+                        return true;
+                }
+                return true;
+            }
+        });
+
         auth = FirebaseAuth.getInstance();
         //firebase
-        String key = auth.getCurrentUser().getUid();
+       // String key = auth.getCurrentUser().getUid();
+        String key = acct.getId();
         userId = key;
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests").child(key);
-        userName = auth.getCurrentUser().getDisplayName();
+        userName = acct.getDisplayName();
 
         //load menu
         recyclerView = findViewById(R.id.listcart);
@@ -406,19 +453,39 @@ public class CartActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+//                Request requestt = new Request(
+//                        "userName",
+//                        "ddddd",
+//                        "txttotalprice.getText().toString()",
+//                        "  order.getProductName()",
+//                        " order.getUnitPrice()",
+//                        "order.getQuantity()",
+//                        "  order.getTotalPrice()",
+//                        " txtLocationResult.getText().toString()",
+//                        "orderKey",
+//                        "userId",
+//                        "0"
+//
+//                );
+//                requests.push().setValue(requestt);
                 if (Order.getOrderList().size() > 0) {
+                    Toast.makeText(CartActivity.this, "size is"+Order.getOrderList().size() , Toast.LENGTH_SHORT).show();
 
-
-                   String tkey = String.valueOf( System.currentTimeMillis());
-                    requests = requests.child(tkey);
-                    String orderKey = tkey;
+                   String tkey = String.valueOf(System.currentTimeMillis());
+                   requests = requests.child(tkey);
+                   String orderKey = tkey;
 
                     for (Order order : Order.getOrderList()) {
+                       // Toast.makeText(CartActivity.this, "size"+Order.getOrderList().size() , Toast.LENGTH_SHORT).show();
+
+                        Log.d("order1", order.getProductName());
+                        Log.d("order2", order.getUnitPrice());
+                        Log.d("order3", order.getQuantity());
+                        Log.d("order4", order.getTotalPrice());
 
 
                         if (!order.getProductName().equals(" ")) {
-
+//                           Toast.makeText(CartActivity.this, "size "+Order.getOrderList().size() , Toast.LENGTH_SHORT).show();
                             Request request = new Request(
                                     userName,
                                     edtcontact.getText().toString(),
@@ -429,8 +496,10 @@ public class CartActivity extends AppCompatActivity {
                                     order.getTotalPrice(),
                                     txtLocationResult.getText().toString(),
                                     orderKey,
-                                    userId
+                                    userId,
+                                    "0"
                             );
+
                             requests.child("Contact").setValue(edtcontact.getText().toString());
                             requests.child("OrderPrice").setValue(txttotalprice.getText().toString());
                             requests.child("Status").setValue("placed");
@@ -440,12 +509,14 @@ public class CartActivity extends AppCompatActivity {
                             requests.push().setValue(request);
                         }
                     }
+
+                    orderList.clear();
+                    adapter.notifyDataSetChanged();
+//                    Toast.makeText(CartActivity.this, "Your order has been placed", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(CartActivity.this,OrdersActivity.class));
+                    finish();
                 }
-                orderList.clear();
-                adapter.notifyDataSetChanged();
-                Toast.makeText(CartActivity.this, "Your order has been placed", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(CartActivity.this,OrdersActivity.class));
-                finish();
+
             }
         });
         alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {

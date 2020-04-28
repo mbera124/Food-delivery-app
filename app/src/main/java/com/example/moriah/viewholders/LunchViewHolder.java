@@ -11,20 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moriah.Interface.ItemClickListener;
 import com.example.moriah.R;
 
+public class LunchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public TextView txtlunchname, txtprice;
+    public ImageView imageView;
+    public CardView cvlunchItem;
 
-public class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
- public TextView txtmenuname;
- public ImageView imageView;
- public CardView cvMenuItem;
+    private ItemClickListener itemClickListener;
 
- private ItemClickListener itemClickListener;
-
-    public MenuViewHolder(@NonNull View itemView) {
+    public LunchViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        txtmenuname=itemView.findViewById(R.id.menu_name);
-        imageView=itemView.findViewById(R.id.menu_image);
-       cvMenuItem = itemView.findViewById(R.id.cvMenuItem);
+        txtlunchname=itemView.findViewById(R.id.lunch_name);
+        txtprice=itemView.findViewById(R.id.etlunchprice);
+        imageView=itemView.findViewById(R.id.lunch_image);
+        cvlunchItem = itemView.findViewById(R.id.cvlunchItem);
 
 //        cvMenuItem.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
         //itemView.setOnClickListener(this);
@@ -35,6 +35,6 @@ public class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     @Override
     public void onClick(View v) {
-    itemClickListener.onClick(v,getAdapterPosition(),false);
+        itemClickListener.onClick(v,getAdapterPosition(),false);
     }
 }

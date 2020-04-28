@@ -16,8 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.moriah.R;
-import com.example.moriah.activities.Home;
-import com.example.moriah.model.Category;
+import com.example.moriah.activities.UserDashboard;
+import com.example.moriah.model.Breakfast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -124,15 +124,15 @@ private EditText etcategory,etmenuid,etmenuprice,etmenudescription;
                                     String TempImagePrice = etmenuprice.getText().toString().trim();
                                     String TempImageDescription = etmenudescription.getText().toString().trim();
 
-                                   Category category = new Category(TempImageCategory,ImageURL,TempImagePrice,TempImageDescription,TempImageId);
-                                    databaseReference.push().setValue(category);
+                                   Breakfast breakfast = new Breakfast(TempImageCategory,ImageURL,TempImagePrice,TempImageDescription,TempImageId);
+                                    databaseReference.push().setValue(breakfast);
                                 }
                         });
 
 
                             progressDialog.dismiss();
                             Toast.makeText(AddCategory.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(AddCategory.this, Home.class));
+                            startActivity(new Intent(AddCategory.this, UserDashboard.class));
                             finish();
                         }
                     })
