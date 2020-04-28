@@ -21,6 +21,7 @@ import com.example.moriah.R;
 import com.example.moriah.activities.TrackOrder;
 import com.example.moriah.adapters.EditOrderAdapter;
 import com.example.moriah.adapters.OrdersAdapter;
+import com.example.moriah.model.Order;
 import com.example.moriah.model.Request;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -30,30 +31,45 @@ import java.util.Locale;
 
 public class OrdersViewHolder  extends RecyclerView.ViewHolder {
     public TextView txtorderid, txtorderstatus, txtorderprice, txtordercontact, txtorderLocation;
-    public ImageView imageView;
+    public ImageView imageView,tick,telephone,road,motorcycle;
     public CardView cvorderitem;
     private FirebaseAuth auth;
+    private List<Order> orderList;
 
     public ItemClickListener itemClickListener;
+
 
     public OrdersViewHolder(@NonNull View itemView) {
         super(itemView);
         txtorderid = itemView.findViewById(R.id.order_id);
         txtorderstatus = itemView.findViewById(R.id.order_status);
         txtorderprice = itemView.findViewById(R.id.order_price);
-        txtordercontact = itemView.findViewById(R.id.order_contact);
-        txtorderLocation = itemView.findViewById(R.id.order_location);
-        imageView = itemView.findViewById(R.id.order_item_count);
+//        txtordercontact = itemView.findViewById(R.id.order_contact);
+//        txtorderLocation = itemView.findViewById(R.id.order_location);
+        imageView = itemView.findViewById(R.id.imgorder);
+        tick = itemView.findViewById(R.id.status);
+        telephone = itemView.findViewById(R.id.contact);
+        road = itemView.findViewById(R.id.location);
+     motorcycle = itemView.findViewById(R.id.motorcycle);
         cvorderitem = itemView.findViewById(R.id.cvorderlayout);
 
 
     }
 
     public void bind(final Request request, OrdersAdapter.onItemClicklistener onItemClick) {
-        txtorderprice.setText(request.getTotal());
+        String currInit = "Ksh. ";
+        txtorderprice.setText(currInit+request.getTotal());
         txtorderid.setText(request.getProductId());
         txtorderstatus.setText(convertToStatus(request.getStatus()));
-        txtordercontact.setText(request.getContact());
+//        txtordercontact.setText(request.getContact());
+
+//        road.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(itemView.getContext(), TrackOrder.class);
+//                itemView.getContext().startActivity(intent);
+//            }
+//        });
         GeocodingLocation locationAddress = new GeocodingLocation();
 
         String latitude="", longitude ="";
@@ -65,7 +81,7 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         lon  =Double.parseDouble(longitude);
 
         getAddressFromLocation(lat, lon, itemView.getContext(), locationAddress);
-        itemView.setOnClickListener(new View.OnClickListener() {
+        road.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onItemClick.onItemClick(request);
@@ -81,12 +97,22 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
 
     private String convertToStatus(String status) {
         if(status != null) {
-            if (status.toLowerCase().equals("placed"))
-                return "placed";
-            else if (status.toLowerCase().equals("on the way"))
+            if (status.toLowerCase().equals("placed")){
+                tick.setVisibility(View.GONE);
+                motorcycle.setVisibility(View.GONE);
+                return "placed";}
+
+            else if (status.toLowerCase().equals("on the way")) {
+                tick.setVisibility(View.GONE);
+                motorcycle.setVisibility(View.VISIBLE);
                 return "on the way";
-            else if(status.toLowerCase().equals("shipped"))
+            }
+            else if(status.toLowerCase().equals("shipped")){
+                tick.setVisibility(View.VISIBLE);
+                motorcycle.setVisibility(View.GONE);
                 return "shipped";
+            }
+
             else
                 return "placed";
         } else{
@@ -99,7 +125,7 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         txtorderprice.setText(request.getTotal());
         txtorderid.setText(request.getProductId());
         txtorderstatus.setText(convertToStatus(request.getStatus()));
-        txtordercontact.setText(request.getContact());
+//        txtordercontact.setText(request.getContact());
         GeocodingLocation locationAddress = new GeocodingLocation();
 
         String latitude="", longitude ="";
@@ -111,12 +137,18 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         lon  =Double.parseDouble(longitude);
        // Handler handler = new Handler();
         getAddressFromLocation(lat, lon, itemView.getContext(), locationAddress);
-        itemView.setOnClickListener(new View.OnClickListener() {
+        road.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onItemClick.onItemClick(request);
+                Intent intent = new Intent(itemView.getContext(), TrackOrder.class);
+                intent.putExtra("latitude", lat);
+                intent.putExtra("longitude", lon);
+                itemView.getContext().startActivity(intent);
+
             }
         });
+
 
     }
 
@@ -132,7 +164,7 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
                 default:
                     locationAddress = null;
             }
-            txtorderLocation.setText(locationAddress);
+//            txtorderLocation.setText(locationAddress);
         }
     }
 
