@@ -15,8 +15,11 @@ import com.example.moriah.activities.FoodDetail;
 import com.example.moriah.model.Breakfast;
 import com.example.moriah.viewholders.BreakfastViewHolder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.List;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class BreakfastAdapter extends RecyclerView.Adapter<BreakfastViewHolder> {
 
@@ -43,11 +46,11 @@ public class BreakfastAdapter extends RecyclerView.Adapter<BreakfastViewHolder> 
        Breakfast breakfast = breakfastList.get(position);
        holder.txtbreakfastname.setText(breakfast.getName());
        holder.txtprice.setText(currInit + breakfast.getPrice());
-//        final int radius = 30;
-//        final int margin = 0;
-//       final Transformation transformation = new RoundedCornersTransformation(radius, margin);
-//        Picasso.get().load(breakfast.getImage()).fit().centerCrop().placeholder(R.drawable.raspberry).transform(transformation).into(holder.imageView);
-      Picasso.get().load(breakfast.getImage()).fit().centerCrop().placeholder(R.drawable.raspberry).into(holder.imageView);
+        final int radius = 30;
+        final int margin = 0;
+       final Transformation transformation = new RoundedCornersTransformation(radius, margin);
+        Picasso.get().load(breakfast.getImage()).fit().centerCrop().placeholder(R.drawable.raspberry).transform(transformation).into(holder.imageView);
+//      Picasso.get().load(breakfast.getImage()).fit().centerCrop().placeholder(R.drawable.raspberry).into(holder.imageView);
 
         holder.cvbreakfastItem.setOnClickListener(new View.OnClickListener() {
                                                  @Override

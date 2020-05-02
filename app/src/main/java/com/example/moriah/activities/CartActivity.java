@@ -126,6 +126,7 @@ BottomNavigationView bottomNavigationView;
                     ", Image: " + personPhoto);
         }
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_cart);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -188,12 +189,16 @@ BottomNavigationView bottomNavigationView;
             @Override
             public void onClick(View v) {
 
-                stopLocationButtonClick();
-                showLastKnownLocation();
-                if (txtLocationResult!= null) {
-                    showAlertDialog();
+
+                if (txtLocationResult.getText().toString().length()==0) {
+                    Toast.makeText(CartActivity.this, "Please Enable Location", Toast.LENGTH_SHORT).show();
+                    startLocationButtonClick();
                 } else {
-                    Toast.makeText(CartActivity.this, "Enable Location in settings", Toast.LENGTH_SHORT).show();
+                    showAlertDialog();
+                    stopLocationButtonClick();
+                    showLastKnownLocation();
+
+//                    Toast.makeText(CartActivity.this, "Enable Location in settings", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -413,17 +418,18 @@ BottomNavigationView bottomNavigationView;
         startActivity(intent);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        startLocationButtonClick();
-        updateLocationUI();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        startLocationButtonClick();
+//        updateLocationUI();
+//    }
 
     private boolean checkPermissions() {
         int permissionState = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         return permissionState == PackageManager.PERMISSION_GRANTED;
+
     }
 
     @Override
@@ -478,10 +484,10 @@ BottomNavigationView bottomNavigationView;
                     for (Order order : Order.getOrderList()) {
                        // Toast.makeText(CartActivity.this, "size"+Order.getOrderList().size() , Toast.LENGTH_SHORT).show();
 
-                        Log.d("order1", order.getProductName());
-                        Log.d("order2", order.getUnitPrice());
-                        Log.d("order3", order.getQuantity());
-                        Log.d("order4", order.getTotalPrice());
+//                        Log.d("order1", order.getProductName());
+//                        Log.d("order2", order.getUnitPrice());
+//                        Log.d("order3", order.getQuantity());
+//                        Log.d("order4", order.getTotalPrice());
 
 
                         if (!order.getProductName().equals(" ")) {
@@ -530,11 +536,12 @@ BottomNavigationView bottomNavigationView;
 
     private void loadListFood() {
         //Calculate Total Price
+        String currtotal = "Ksh.";
         Double total = 0.0;
         for (Order order : Order.getOrderList()) {
           if (!order.getTotalPrice().equals("")) {
                 total += Double.parseDouble(order.getTotalPrice());
-               txttotalprice.setText(Double.toString(total));
+               txttotalprice.setText(currtotal+Double.toString(total));
             }
           }
     }

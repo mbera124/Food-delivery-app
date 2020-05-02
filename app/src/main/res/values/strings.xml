@@ -17,16 +17,16 @@
     <string name="start">GOT IT</string>
 
     <string name="slide_1_title">Place Order!</string>
-    <string name="slide_1_desc">The easiest way to order food from Moriah!</string>
+    <string name="slide_1_desc">Tasty, hot and hygienic!</string>
 
     <string name="slide_2_title">Location</string>
-    <string name="slide_2_desc">Pics your current location automatically for easy and fast delivery!</string>
+    <string name="slide_2_desc">Automatically pics your current location  for easy and fast delivery!</string>
 
     <string name="slide_3_title">Affordable</string>
-    <string name="slide_3_desc">Affordable quality service!</string>
+    <string name="slide_3_desc">Affordable  and quality meals!</string>
 
     <string name="slide_4_title">Fast Delivery</string>
-    <string name="slide_4_desc">Fast delivery of meals to your doorstep!</string>
+    <string name="slide_4_desc">Freshness delivered on time!</string>
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>

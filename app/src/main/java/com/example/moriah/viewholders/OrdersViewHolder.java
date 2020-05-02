@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moriah.Interface.ItemClickListener;
 import com.example.moriah.R;
+import com.example.moriah.activities.OrderedActivity;
 import com.example.moriah.activities.TrackOrder;
 import com.example.moriah.adapters.EditOrderAdapter;
 import com.example.moriah.adapters.OrdersAdapter;
@@ -50,7 +51,7 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         tick = itemView.findViewById(R.id.status);
         telephone = itemView.findViewById(R.id.contact);
         road = itemView.findViewById(R.id.location);
-     motorcycle = itemView.findViewById(R.id.motorcycle);
+       motorcycle = itemView.findViewById(R.id.motorcycle);
         cvorderitem = itemView.findViewById(R.id.cvorderlayout);
 
 
@@ -63,13 +64,14 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         txtorderstatus.setText(convertToStatus(request.getStatus()));
 //        txtordercontact.setText(request.getContact());
 
-//        road.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(itemView.getContext(), TrackOrder.class);
-//                itemView.getContext().startActivity(intent);
-//            }
-//        });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(itemView.getContext(), OrderedActivity.class);
+                intent.putExtra("orderId", request.getProductId());
+                itemView.getContext().startActivity(intent);
+            }
+        });
         GeocodingLocation locationAddress = new GeocodingLocation();
 
         String latitude="", longitude ="";
@@ -84,7 +86,7 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         road.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick.onItemClick(request);
+//                onItemClick.onItemClick(request);
                 Intent intent = new Intent(itemView.getContext(), TrackOrder.class);
                 intent.putExtra("latitude", lat);
                 intent.putExtra("longitude", lon);
@@ -101,6 +103,11 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
                 tick.setVisibility(View.GONE);
                 motorcycle.setVisibility(View.GONE);
                 return "placed";}
+            else if (status.toLowerCase().equals("received")) {
+                tick.setVisibility(View.GONE);
+                motorcycle.setVisibility(View.GONE);
+                return "received";
+            }
 
             else if (status.toLowerCase().equals("on the way")) {
                 tick.setVisibility(View.GONE);
@@ -113,9 +120,11 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
                 return "shipped";
             }
 
-            else
+            else {
                 return "placed";
-        } else{
+            }
+        }
+        else{
             return "placed";
         }
 
@@ -126,6 +135,14 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         txtorderid.setText(request.getProductId());
         txtorderstatus.setText(convertToStatus(request.getStatus()));
 //        txtordercontact.setText(request.getContact());
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(itemView.getContext(), OrderedActivity.class);
+                intent.putExtra("orderId", request.getProductId());
+                itemView.getContext().startActivity(intent);
+            }
+        });
         GeocodingLocation locationAddress = new GeocodingLocation();
 
         String latitude="", longitude ="";
@@ -140,12 +157,25 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         road.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick.onItemClick(request);
                 Intent intent = new Intent(itemView.getContext(), TrackOrder.class);
                 intent.putExtra("latitude", lat);
                 intent.putExtra("longitude", lon);
                 itemView.getContext().startActivity(intent);
 
+            }
+        });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(itemView.getContext(), OrderedActivity.class);
+                intent.putExtra("orderId", request.getProductId());
+                itemView.getContext().startActivity(intent);
+            }
+        });
+        txtorderstatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick.onItemClick(request);
             }
         });
 

@@ -3,10 +3,13 @@ package com.example.moriah.admin;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +18,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moriah.R;
-import com.example.moriah.activities.TrackOrder;
+import com.example.moriah.activities.AboutUsActivity;
+import com.example.moriah.activities.CartActivity;
+import com.example.moriah.activities.OrdersActivity;
+import com.example.moriah.activities.UserDashboard;
 import com.example.moriah.adapters.EditOrderAdapter;
 import com.example.moriah.model.Request;
 import com.example.moriah.viewholders.OrdersViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -46,6 +55,7 @@ public class EditOrders extends AppCompatActivity implements EditOrderAdapter.on
     DatabaseReference requests;
     List<Request> foods = new ArrayList<>();
     EditOrderAdapter editOrderAdapter;
+    BottomNavigationView bottomNavigationView;
     private String TAG = "Admin";
 private int Selecteditem=0;
     @Override
@@ -54,6 +64,52 @@ private int Selecteditem=0;
         setContentView(R.layout.activity_edit_orders);
 //        Toast.makeText(this, "orders,", Toast.LENGTH_LONG).show();
 //        auth = FirebaseAuth.getInstance();
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();
+            Log.e(TAG, "Name: " + personName + ", email: " + personEmail+ ",Id:"+ personId+
+                    ", Image: " + personPhoto);
+        }
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_orders);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_menu:
+                        startActivity(new Intent(getApplicationContext(), UserDashboard.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    case R.id.navigation_cart:
+                        startActivity(new Intent(getApplicationContext(), CartActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    case R.id.navigation_orders:
+                        if (acct.getEmail().equals("josephmbera124@gmail.com")) {
+                            startActivity(new Intent(getApplicationContext(), EditOrders.class));
+                        }else{
+                            startActivity(new Intent(getApplicationContext(), OrdersActivity.class));
+                            overridePendingTransition(0,0);}
+                        finish();
+                        break;
+                    case R.id.navigation_about:
+                        startActivity(new Intent(getApplicationContext(), AboutUsActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    default:
+                        return true;
+                }
+                return true;
+            }
+        });
 
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests");
@@ -138,8 +194,8 @@ private int Selecteditem=0;
     public void onItemClick(Request request) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(EditOrders.this);
         alertDialog.setTitle("Select Action");
-        String[] items = {"Placed","On The Way","Shipped", "Location"};
-        int checkedItem = 1;
+        String[] items = {"Received","On The Way","Shipped"};
+     int checkedItem =2;
 
         alertDialog.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
             @Override
@@ -154,9 +210,9 @@ private int Selecteditem=0;
                     case(2):
                         Selecteditem=2;
                         break;
-                    case(3):
-                        Selecteditem=3;
-                        break;
+
+
+
                 }
             }
 
@@ -164,22 +220,28 @@ private int Selecteditem=0;
 
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-if (Selecteditem==0){
-     requests.child(request.getUserIdkey()).child(request.getKey()).child("Status").setValue("Placed");
-     editOrderAdapter.notifyDataSetChanged();
+if (Selecteditem==1){
+     requests.child(request.getUserIdkey()).child(request.getKey()).child("Status").setValue("Received");
+//     editOrderAdapter.notifyDataSetChanged();
+    if (foods.size() > 0) {
+        foods.clear();
+    }
 }
-else if (Selecteditem==1) {
+else if (Selecteditem==2) {
 
      requests.child(request.getUserIdkey()).child(request.getKey()).child("Status").setValue("On The Way");
     // request.setStatus("On The Way");
-     editOrderAdapter.notifyDataSetChanged();
-}
-else if (Selecteditem==2){
-     requests.child(request.getUserIdkey()).child(request.getKey()).child("Status").setValue("Shipped");
-     editOrderAdapter.notifyDataSetChanged();
+//     editOrderAdapter.notifyDataSetChanged();
+    if (foods.size() > 0) {
+        foods.clear();
+    }
 }
 else if (Selecteditem==3){
-    startActivity(new Intent(EditOrders.this, TrackOrder.class));
+     requests.child(request.getUserIdkey()).child(request.getKey()).child("Status").setValue("Shipped");
+//     editOrderAdapter.notifyDataSetChanged();
+    if (foods.size() > 0) {
+        foods.clear();
+    }
 }
             }
         });

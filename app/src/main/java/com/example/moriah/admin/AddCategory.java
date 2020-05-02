@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,10 +18,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.moriah.R;
+import com.example.moriah.activities.AboutUsActivity;
+import com.example.moriah.activities.CartActivity;
+import com.example.moriah.activities.OrdersActivity;
 import com.example.moriah.activities.UserDashboard;
 import com.example.moriah.model.Breakfast;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -34,7 +42,8 @@ public class AddCategory extends AppCompatActivity {
 private Button btnselect,btnsave;
 private ImageView imgcategory;
 private EditText etcategory,etmenuid,etmenuprice,etmenudescription;
-
+    BottomNavigationView bottomNavigationView;
+    private static final String TAG = AddCategory.class.getSimpleName();
     private Uri filePath;
     DatabaseReference databaseReference;
     FirebaseStorage storage;
@@ -58,6 +67,51 @@ private EditText etcategory,etmenuid,etmenuprice,etmenudescription;
         etmenuid=findViewById(R.id.etmenuid);
         etmenuprice=findViewById(R.id.etmenuprice);
         etmenudescription=findViewById(R.id.etmenudescription);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();
+            Log.e(TAG, "Name: " + personName + ", email: " + personEmail+ ",Id:"+ personId+
+                    ", Image: " + personPhoto);
+        }
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_menu:
+                        startActivity(new Intent(getApplicationContext(), UserDashboard.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    case R.id.navigation_cart:
+                        startActivity(new Intent(getApplicationContext(), CartActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    case R.id.navigation_orders:
+                        if (acct.getEmail().equals("josephmbera124@gmail.com")) {
+                            startActivity(new Intent(getApplicationContext(), EditOrders.class));
+                        }else{
+                            startActivity(new Intent(getApplicationContext(), OrdersActivity.class));
+                            overridePendingTransition(0,0);}
+                        finish();
+                        break;
+                    case R.id.navigation_about:
+                        startActivity(new Intent(getApplicationContext(), AboutUsActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        break;
+                    default:
+                        return true;
+                }
+                return true;
+            }
+        });
 
         storageReference = FirebaseStorage.getInstance().getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference("Menu");

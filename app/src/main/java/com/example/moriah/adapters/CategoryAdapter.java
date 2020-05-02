@@ -23,7 +23,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     private onItemClicklistener listener;
 
     public interface onItemClicklistener{
-         void onItemClick(Category category) ;
+         void onItemClick(Category category,int pos) ;
     }
 
 

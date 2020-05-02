@@ -13,10 +13,15 @@ import com.example.moriah.R;
 import com.example.moriah.adapters.CategoryAdapter;
 import com.example.moriah.model.Category;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+
+import static android.view.View.GONE;
 
 public class CategoryViewHolder extends RecyclerView.ViewHolder{
     public TextView txtcategoryname;
-    public ImageView imageView;
+    public ImageView imageView,imgcheck;
     public CardView cvcategoryItem;
 
     private ItemClickListener itemClickListener;
@@ -26,24 +31,26 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder{
 
         txtcategoryname = itemView.findViewById(R.id.category_name);
         imageView = itemView.findViewById(R.id.category_image);
+        imgcheck = itemView.findViewById(R.id.imgcheck);
         cvcategoryItem = itemView.findViewById(R.id.cvcategoryItem);
+        imgcheck.setVisibility(GONE);
     }
 
         public void bind(final Category category, CategoryAdapter.onItemClicklistener onItemClick) {
             txtcategoryname.setText(category.getName());
+            final int radius = 40;
+        final int margin = 0;
+        final Transformation transformation = new RoundedCornersTransformation(radius, margin);
+//            Picasso.get().load(category.getImage()).fit().centerCrop().placeholder(R.drawable.raspberry).into(imageView);
             Picasso.get().load(category.getImage()).fit().centerCrop().placeholder(R.drawable.raspberry).into(imageView);
-//            Picasso.get().load(category.getImage()).fit().centerCrop().placeholder(R.drawable.raspberry).into(holder.imageView);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClick.onItemClick(category);
+                    onItemClick.onItemClick(category,getAdapterPosition());
 
-                  // Intent intent = new Intent(itemView.getContext(), Category.class);
-                   // intent.putExtra("image_url", category.getImage());
-                   // intent.putExtra("image_name", category.getName());
-                   // itemView.getContext().startActivity(intent);
+
 
                 }
             });

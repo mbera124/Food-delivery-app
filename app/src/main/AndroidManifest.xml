@@ -20,8 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-
+        <activity android:name=".activities.OrderedActivity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -36,23 +35,23 @@
 
         <activity
             android:name=".activities.TrackOrder"
-            android:label="@string/title_activity_track_order"/>
+            android:label="@string/title_activity_track_order" />
         <activity android:name=".admin.EditOrders" />
         <activity android:name=".admin.AddCategory" />
         <activity android:name=".activities.FoodDetail" />
         <activity android:name=".activities.SplashActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".activities.CartActivity" />
         <activity android:name=".activities.AboutUsActivity" />
         <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.OrdersActivity" />
         <activity android:name=".activities.NotificationsActivity" />
-        <activity android:name=".activities.UserDashboard"/>
+        <activity android:name=".activities.UserDashboard" />
         <activity android:name=".activities.Signup" />
         <activity
             android:name=".activities.Login"

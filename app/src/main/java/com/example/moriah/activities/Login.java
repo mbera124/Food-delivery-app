@@ -1,5 +1,6 @@
 package com.example.moriah.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -208,16 +209,29 @@ public class Login extends AppCompatActivity {
 
         @Override
         public void onBackPressed() {
-            AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-            builder.setTitle(R.string.app_name);
-            builder.setIcon(R.mipmap.ic_launcher);
-            builder.setMessage("Do you want to exit?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", (dialog, id) -> finish())
-                    .setNegativeButton("No", (dialog, id) -> dialog.cancel());
-            AlertDialog alert = builder.create();
-            alert.show();
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(Login.this);
+            alertDialog.setTitle("MORIAH");
+            alertDialog.setMessage("Do you want to exit?");
+            alertDialog.setIcon(R.drawable.cart);
+            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    System.exit(0);
+                        }
+
+
+
+            });
+            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alertDialog.show();
+        }
 
         }
 
-    }

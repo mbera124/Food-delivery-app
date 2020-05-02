@@ -109,6 +109,7 @@ public class Request {
         Quantity = quantity;
     }
 
+
     public String getTotalOrderPrice() {
         return totalOrderPrice;
     }

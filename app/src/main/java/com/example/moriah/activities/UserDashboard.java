@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,21 +70,16 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
     BottomNavigationView bottomNavigationView;
     private static final String TAG = "UserDashboard";
     private static final String ARG_NAME = "username";
+    int previousposition=0;
 
       GoogleSignInClient googleSignInClient;
 
-//    View separator;
-
-    @Override
+      @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_dashboard);
         cardViewtop = findViewById(R.id.cardViewtop);
         cardViewbreakfast = findViewById(R.id.cardviewbreakfast);
-//        cardProfile = findViewById(R.id.cardProfile);
-//        cardNotifications = findViewById(R.id.cardNotifications);
-//        cardAbout = findViewById(R.id.cardAbout);
-//        cardSignout = findViewById(R.id.cardsignout);
         tvname=findViewById(R.id.tvprofilename);
         imgedit=findViewById(R.id.tvedit);
         imgexit=findViewById(R.id.tvsignout);
@@ -110,19 +106,16 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
 
-            Log.e(TAG, "Name: " + personName + ", email: " + personEmail
+            Log.e(TAG, "Name: " + personGivenName + ", email: " + personEmail
                     + ", Image: " + personPhoto);
 
-            tvname.setText(personName);
+            tvname.setText(personGivenName);
             Glide.with(getApplicationContext()).load(personPhoto)
                     .thumbnail(0.5f)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imgprofile);
         }
-//            tvname.setText(auth.getCurrentUser().getEmail());
-
-
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -166,21 +159,13 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
         if (auth.getCurrentUser() != null) {
             Toast.makeText(UserDashboard.this, "Welcome back " + " " + acct.getDisplayName() + " ", Toast.LENGTH_LONG).show();
         }
-//        btncart.setOnClickListener(v -> {
-//            startActivity(new Intent(UserDashboard.this, CartActivity.class));
-//            finish();
-//        });
 
         database = FirebaseDatabase.getInstance();
-        //database.setPersistenceEnabled(true);
         databaseReference = database.getReference("Category");
-
-
-        //load category
+             //load category
         categoryAdapter = new CategoryAdapter(this, categoryList, this);
         recycler_category = findViewById(R.id.recycler_category);
         recycler_category.setHasFixedSize(true);
-        //        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
         recycler_category.setLayoutManager(layoutManager);
         recycler_category.setAdapter(categoryAdapter);
@@ -189,22 +174,23 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
         databasebreakfastReference = database.getReference("Breakfast");
         databaselunchReference = database.getReference("Delights");
         databasedrinksReference = database.getReference("Softdrinks");
-//breakfast
+            //breakfast
         breakfastAdapter = new BreakfastAdapter(this, breakfastList);
         recycler_breakfast = findViewById(R.id.recycler_breakfastdash);
         recycler_breakfast.setHasFixedSize(true);
         recycler_breakfast.setNestedScrollingEnabled(false);
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
 //       RecyclerView.LayoutManager layoutManagerb = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL,false);
         recycler_breakfast.setLayoutManager(staggeredGridLayoutManager);
         recycler_breakfast.setAdapter(breakfastAdapter);
-       loadBreakfast();
+         loadBreakfast();
+
+
     }
 
     private void SignOut() {
         // Firebase sign out
         auth.signOut();
-
         // Google sign out
         googleSignInClient.signOut().addOnCompleteListener(this,
                 new OnCompleteListener<Void>() {
@@ -233,12 +219,8 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
                         breakfastList.add(breakfast);
                     }
                 }
-//                hideProgressDialog();
-                Toast.makeText(UserDashboard.this, "" + breakfastList.size(), Toast.LENGTH_SHORT).show();
                 breakfastAdapter.notifyDataSetChanged();
             }
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -264,12 +246,8 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
                         breakfastList.add(breakfast);
                     }
                 }
-//                hideProgressDialog();
-                Toast.makeText(UserDashboard.this, "" + breakfastList.size(), Toast.LENGTH_SHORT).show();
                 breakfastAdapter.notifyDataSetChanged();
             }
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -295,25 +273,16 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
                         breakfastList.add(breakfast);
                     }
                 }
-//                hideProgressDialog();
-                Toast.makeText(UserDashboard.this, "" + breakfastList.size(), Toast.LENGTH_SHORT).show();
                 breakfastAdapter.notifyDataSetChanged();
             }
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
-
     }
 
 
     private void loadCategory() {
-//        showProgressDialog();
-
         if (categoryList.size() > 0) {
             categoryList.clear();
         }
@@ -326,27 +295,32 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
                         Category category = mdataSnapshot.getValue(Category.class);
                         categoryList.add(category);
                     }
-
-
                 }
-//                hideProgressDialog();
-                //Toast.makeText(Home.this, "" + categoryList.size(), Toast.LENGTH_SHORT).show();
                 categoryAdapter.notifyDataSetChanged();
+
             }
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
 
     @Override
-    public void onItemClick(Category category) {
-        String name = category.getName();
-//        Toast.makeText(this, "just clicked", Toast.LENGTH_SHORT).show();
+    public void onItemClick(Category category, int pos) {
+        View prev=recycler_category.findViewHolderForAdapterPosition(previousposition).itemView;
+        if(prev != null) {
+            ImageView prevImageView = (ImageView) prev.findViewById(R.id.imgcheck);
+            prevImageView.setVisibility(View.GONE);
+        }
+          View view=recycler_category.findViewHolderForAdapterPosition(pos).itemView;
+        if(view != null){
+            ImageView imageView=(ImageView) view.findViewById(R.id.imgcheck);
+            imageView.setVisibility(View.VISIBLE);
+        }
 
+          previousposition = pos;
+
+        String name = category.getName();
         switch (name.toLowerCase()){
             case "breakfast":
                  loadBreakfast();

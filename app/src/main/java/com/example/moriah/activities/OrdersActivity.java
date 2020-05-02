@@ -55,6 +55,9 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
+        if (foods.size() > 0) {
+            foods.clear();
+        }
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
             String personName = acct.getDisplayName();
@@ -66,6 +69,7 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
             Log.e(TAG, "Name: " + personName + ", email: " + personEmail+ ",Id:"+ personId+ ", Image: " + personPhoto);
         }
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_orders);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -107,7 +111,6 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        //  recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(ordersAdapter);
         loadOrders();
 
@@ -123,10 +126,15 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    if (foods.size()>0)
+                    {
+                        foods.clear();
+                    }
                     for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
-
                         if (postSnapShot != null) {
                             Request request = new Request();
+                           // Log.d("contact", ""+postSnapShot);
+                            Log.d("contact", ""+postSnapShot.child("Contact").getValue().toString());
                             request.setContact(postSnapShot.child("Contact").getValue().toString());
                             request.setProductId(postSnapShot.child("Mkey").getValue().toString());
                             request.setStatus(postSnapShot.child("Status").getValue().toString());
@@ -169,7 +177,7 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
 
     @Override
     public void onItemClick(Request request) {
-        startActivity(new Intent(this,TrackOrder.class ));
+//        startActivity(new Intent(this,TrackOrder.class ));
     }
 }
 

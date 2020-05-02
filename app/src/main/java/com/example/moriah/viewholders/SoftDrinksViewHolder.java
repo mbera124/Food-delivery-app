@@ -23,7 +23,7 @@ public SoftDrinksViewHolder(@NonNull View itemView) {
 
         txtdrinkname=itemView.findViewById(R.id.drink_name);
         txtprice=itemView.findViewById(R.id.etdrinkprice);
-        imageView=itemView.findViewById(R.id.lunch_image);
+        imageView=itemView.findViewById(R.id.drink_image);
         cvdrinkItem = itemView.findViewById(R.id.cvdrinkItem);
 
 //        cvMenuItem.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
