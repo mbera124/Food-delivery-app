@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -153,12 +152,12 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
         });
 
 
-        prefManager = new PrefManager(this);
+//        prefManager = new PrefManager(this);
 
         auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
-            Toast.makeText(UserDashboard.this, "Welcome back " + " " + acct.getDisplayName() + " ", Toast.LENGTH_LONG).show();
-        }
+//        if (auth.getCurrentUser() != null) {
+//            Toast.makeText(UserDashboard.this, "Welcome back " + " " + acct.getDisplayName() + " ", Toast.LENGTH_LONG).show();
+//        }
 
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Category");

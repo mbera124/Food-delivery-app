@@ -1,5 +1,6 @@
 package com.example.moriah.viewholders;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -31,14 +32,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class OrdersViewHolder  extends RecyclerView.ViewHolder {
-    public TextView txtorderid, txtorderstatus, txtorderprice, txtordercontact, txtorderLocation;
+    public TextView txtorderid, txtorderstatus, txtorderprice, txtordercontact, txtorderLocation,txtname;
     public ImageView imageView,tick,telephone,road,motorcycle;
     public CardView cvorderitem;
     private FirebaseAuth auth;
     private List<Order> orderList;
-
+    NotificationManager mNotificationManager;
     public ItemClickListener itemClickListener;
-
+    private static final int NOTIFY_ME_ID=1337;
 
     public OrdersViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -53,8 +54,7 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         road = itemView.findViewById(R.id.location);
        motorcycle = itemView.findViewById(R.id.motorcycle);
         cvorderitem = itemView.findViewById(R.id.cvorderlayout);
-
-
+//        txtname=itemView.findViewById(R.id.user_name);
     }
 
     public void bind(final Request request, OrdersAdapter.onItemClicklistener onItemClick) {
@@ -112,6 +112,7 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
             else if (status.toLowerCase().equals("on the way")) {
                 tick.setVisibility(View.GONE);
                 motorcycle.setVisibility(View.VISIBLE);
+//                notifymessage();
                 return "on the way";
             }
             else if(status.toLowerCase().equals("shipped")){
@@ -130,9 +131,30 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
 
     }
 
+//    private void notifymessage() {
+//        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(itemView.getContext());
+//        nBuilder.setContentTitle("MORIAH");
+//        nBuilder.setContentText("Your order has been processed");
+//        nBuilder.setTicker("Moriah Notification");
+//        nBuilder.setAutoCancel(true);
+//        nBuilder.setSmallIcon(R.drawable.bell);
+//        Intent intent = new Intent(itemView.getContext(), OrdersActivity.class);
+//
+//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(itemView.getContext());
+//        stackBuilder.addParentStack(OrdersActivity.class);
+//        stackBuilder.addNextIntent(intent);
+//
+//        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,
+//                PendingIntent.FLAG_UPDATE_CURRENT);
+//        nBuilder.setContentIntent(pendingIntent);
+//        mNotificationManager =(NotificationManager) itemView.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+//        mNotificationManager.notify(NOTIFY_ME_ID, nBuilder.build());
+//    }
+
     public void bind(final Request request, EditOrderAdapter.onItemClicklistener onItemClick) {
         txtorderprice.setText(request.getTotal());
-        txtorderid.setText(request.getProductId());
+        txtorderid.setText(request.getUserIdkey());
+//        txtname.setText(request.getName());
         txtorderstatus.setText(convertToStatus(request.getStatus()));
 //        txtordercontact.setText(request.getContact());
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -246,6 +268,8 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         };
         thread.start();
     }
+
+
 }
 
 

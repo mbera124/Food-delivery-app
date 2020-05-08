@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:itemBackground="@color/colorPrimary"
+        android:background="@color/colorPrimary"
         app:itemIconTint="@color/White"
         app:itemTextColor="@color/White"
         app:layout_constraintBottom_toBottomOf="parent"
