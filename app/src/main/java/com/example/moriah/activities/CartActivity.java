@@ -381,8 +381,9 @@ BottomNavigationView bottomNavigationView;
 
     public void showLastKnownLocation() {
         if (mCurrentLocation != null) {
-            Toast.makeText(getApplicationContext(), "Lat: " + mCurrentLocation.getLatitude()
-                    + ", Lng: " + mCurrentLocation.getLongitude(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Last known location saved", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Lat: " + mCurrentLocation.getLatitude()
+//                    + ", Lng: " + mCurrentLocation.getLongitude(), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), "Last known location is not available!", Toast.LENGTH_SHORT).show();
         }
@@ -390,6 +391,7 @@ BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             // Check for the integer request code originally supplied to startResolutionForResult().
             case REQUEST_CHECK_SETTINGS:

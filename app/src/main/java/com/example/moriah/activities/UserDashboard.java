@@ -80,14 +80,14 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
         cardViewtop = findViewById(R.id.cardViewtop);
         cardViewbreakfast = findViewById(R.id.cardviewbreakfast);
         tvname=findViewById(R.id.tvprofilename);
-        imgedit=findViewById(R.id.tvedit);
+//        imgedit=findViewById(R.id.tvedit);
         imgexit=findViewById(R.id.tvsignout);
         imgprofile=findViewById(R.id.imgudprifile);
 
-        imgedit.setOnClickListener(v -> {
-            startActivity(new Intent(UserDashboard.this, ProfileActivity.class));
-            finish();
-        });
+//        imgedit.setOnClickListener(v -> {
+//            startActivity(new Intent(UserDashboard.this, ProfileActivity.class));
+//            finish();
+//        });
         imgexit.setOnClickListener(v -> {
             SignOut();
             startActivity(new Intent(UserDashboard.this, Login.class));
