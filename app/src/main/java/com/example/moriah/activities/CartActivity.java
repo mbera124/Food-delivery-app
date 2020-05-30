@@ -458,43 +458,15 @@ BottomNavigationView bottomNavigationView;
         alertDialog.setView(edtcontact);
         alertDialog.setIcon(R.drawable.cart);
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                Request requestt = new Request(
-//                        "userName",
-//                        "ddddd",
-//                        "txttotalprice.getText().toString()",
-//                        "  order.getProductName()",
-//                        " order.getUnitPrice()",
-//                        "order.getQuantity()",
-//                        "  order.getTotalPrice()",
-//                        " txtLocationResult.getText().toString()",
-//                        "orderKey",
-//                        "userId",
-//                        "0"
-//
-//                );
-//                requests.push().setValue(requestt);
                 if (Order.getOrderList().size() > 0) {
-                    Toast.makeText(CartActivity.this, "size is"+Order.getOrderList().size() , Toast.LENGTH_SHORT).show();
-
                    String tkey = String.valueOf(System.currentTimeMillis());
                    requests = requests.child(tkey);
                    String orderKey = tkey;
-
                     for (Order order : Order.getOrderList()) {
-                       // Toast.makeText(CartActivity.this, "size"+Order.getOrderList().size() , Toast.LENGTH_SHORT).show();
-
-//                        Log.d("order1", order.getProductName());
-//                        Log.d("order2", order.getUnitPrice());
-//                        Log.d("order3", order.getQuantity());
-//                        Log.d("order4", order.getTotalPrice());
-
-
                         if (!order.getProductName().equals(" ")) {
-//                           Toast.makeText(CartActivity.this, "size "+Order.getOrderList().size() , Toast.LENGTH_SHORT).show();
-                            Request request = new Request(
+                        Request request = new Request(
                                     userName,
                                     edtcontact.getText().toString(),
                                     txttotalprice.getText().toString(),
@@ -507,7 +479,6 @@ BottomNavigationView bottomNavigationView;
                                     userId,
                                     "0"
                             );
-
                             requests.child("Contact").setValue(edtcontact.getText().toString());
                             requests.child("OrderPrice").setValue(txttotalprice.getText().toString());
                             requests.child("Status").setValue("placed");
@@ -517,14 +488,12 @@ BottomNavigationView bottomNavigationView;
                             requests.push().setValue(request);
                         }
                     }
-
                     orderList.clear();
                     adapter.notifyDataSetChanged();
-//                    Toast.makeText(CartActivity.this, "Your order has been placed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CartActivity.this, "Your order has been placed", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(CartActivity.this,OrdersActivity.class));
                     finish();
                 }
-
             }
         });
         alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -535,7 +504,6 @@ BottomNavigationView bottomNavigationView;
         });
         alertDialog.show();
     }
-
     private void loadListFood() {
         //Calculate Total Price
         String currtotal = "Ksh.";

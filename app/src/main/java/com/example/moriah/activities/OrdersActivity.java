@@ -1,6 +1,10 @@
 package com.example.moriah.activities;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +55,8 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
     OrdersAdapter ordersAdapter;
     BottomNavigationView bottomNavigationView;
     private static final String TAG = OrdersActivity.class.getSimpleName();
+    private static final int NOTIFY_ME_ID=1337;
+    NotificationManager mNotificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +122,7 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
         loadOrders();
 
 
+
     }
 
 
@@ -141,9 +149,13 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
                             request.setStatus(postSnapShot.child("Status").getValue().toString());
                             request.setTotal(postSnapShot.child("OrderPrice").getValue().toString());
                             request.setTxtLocationResult(postSnapShot.child("Location").getValue().toString());
+                            if (request.getStatus().toLowerCase().equals("on the way")){
+                                notifymessage();
+                            }
                             foods.add(request);
 
                         }
+
 
                     }
                     ordersAdapter.notifyDataSetChanged();
@@ -179,6 +191,31 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
     @Override
     public void onItemClick(Request request) {
 //        startActivity(new Intent(this,TrackOrder.class ));
+        if (request.getStatus().toLowerCase().equals("on the way")){
+            notifymessage();
+        }
+
+    }
+
+    private void notifymessage() {
+
+        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this);
+        nBuilder.setContentTitle("MORIAH");
+        nBuilder.setContentText("Your order has been processed");
+        nBuilder.setTicker("Moriah Notification");
+        nBuilder.setAutoCancel(true);
+        nBuilder.setSmallIcon(R.drawable.bell);
+        Intent intent = new Intent(this, OrdersActivity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(OrdersActivity.class);
+        stackBuilder.addNextIntent(intent);
+
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        nBuilder.setContentIntent(pendingIntent);
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(NOTIFY_ME_ID, nBuilder.build());
     }
 }
 

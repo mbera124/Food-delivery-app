@@ -10,19 +10,19 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listorders"/>
+        android:id="@+id/listorders"
+        android:layout_marginBottom="60dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="4dp"
         android:background="@color/colorPrimary"
         app:itemIconTint="@color/White"
         app:itemTextColor="@color/White"
-        app:menu="@menu/navigation" />
+        app:menu="@menu/navigation"
+        android:layout_alignParentBottom="true"/>
 
 
 </RelativeLayout>
