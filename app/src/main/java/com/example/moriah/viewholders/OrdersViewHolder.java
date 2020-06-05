@@ -27,11 +27,13 @@ import com.example.moriah.activities.OrdersActivity;
 import com.example.moriah.activities.TrackOrder;
 import com.example.moriah.adapters.EditOrderAdapter;
 import com.example.moriah.adapters.OrdersAdapter;
+import com.example.moriah.model.AESEncryption;
 import com.example.moriah.model.Order;
 import com.example.moriah.model.Request;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,7 +52,7 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         txtorderid = itemView.findViewById(R.id.order_id);
         txtorderstatus = itemView.findViewById(R.id.order_status);
         txtorderprice = itemView.findViewById(R.id.order_price);
-//        txtordercontact = itemView.findViewById(R.id.order_contact);
+        txtordercontact = itemView.findViewById(R.id.order_contact);
 //        txtorderLocation = itemView.findViewById(R.id.order_location);
         imageView = itemView.findViewById(R.id.imgorder);
         tick = itemView.findViewById(R.id.status);
@@ -66,7 +68,18 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         txtorderprice.setText(currInit+request.getTotal());
         txtorderid.setText(request.getProductId());
         txtorderstatus.setText(convertToStatus(request.getStatus()));
-//        txtordercontact.setText(request.getContact());
+        String mContact=request.getContact();
+        try {
+            String aluta = "aluta";
+            AESEncryption aesCrypt = new AESEncryption();
+
+            mContact = aesCrypt.decrypt(aluta,mContact);
+
+        }catch (GeneralSecurityException e){
+            //handle error
+        }
+        txtordercontact.setText(mContact);
+
 
 
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +174,17 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
         txtorderid.setText(request.getUserIdkey());
 //        txtname.setText(request.getName());
         txtorderstatus.setText(convertToStatus(request.getStatus()));
-//        txtordercontact.setText(request.getContact());
+        String mContact=request.getContact();
+        try {
+            String aluta = "aluta";
+            AESEncryption aesCrypt = new AESEncryption();
+
+            mContact = aesCrypt.decrypt(aluta,mContact);
+
+        }catch (GeneralSecurityException e){
+            //handle error
+        }
+          txtordercontact.setText(mContact);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

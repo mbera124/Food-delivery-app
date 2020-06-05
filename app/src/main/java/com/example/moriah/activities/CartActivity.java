@@ -32,6 +32,7 @@ import com.example.moriah.BuildConfig;
 import com.example.moriah.R;
 import com.example.moriah.adapters.CartAdapter;
 import com.example.moriah.admin.EditOrders;
+import com.example.moriah.model.AESEncryption;
 import com.example.moriah.model.Order;
 import com.example.moriah.model.Request;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -63,6 +64,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +110,7 @@ BottomNavigationView bottomNavigationView;
 
     // boolean flag to toggle the ui
     private Boolean mRequestingLocationUpdates;
+    private String mContact = "" ;
 
 
     @Override
@@ -479,12 +482,24 @@ BottomNavigationView bottomNavigationView;
                                     userId,
                                     "0"
                             );
-                            requests.child("Contact").setValue(edtcontact.getText().toString());
+
+
+                            try {
+                                String aluta = "aluta";
+                                AESEncryption aesCrypt = new AESEncryption();
+
+                                mContact = aesCrypt.encrypt(aluta,edtcontact.getText().toString());
+
+                            }catch (GeneralSecurityException e){
+                                //handle error
+                            }
+                            requests.child("Contact").setValue(mContact);
                             requests.child("OrderPrice").setValue(txttotalprice.getText().toString());
                             requests.child("Status").setValue("placed");
                             requests.child("Mkey").setValue(tkey);
                             requests.child("UserId").setValue(userId);
                             requests.child("Location").setValue(txtLocationResult.getText().toString());
+
                             requests.push().setValue(request);
                         }
                     }
