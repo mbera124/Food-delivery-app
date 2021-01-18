@@ -149,10 +149,8 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
                             request.setStatus(postSnapShot.child("Status").getValue().toString());
                             request.setTotal(postSnapShot.child("OrderPrice").getValue().toString());
                             request.setTxtLocationResult(postSnapShot.child("Location").getValue().toString());
-                            if (request.getStatus().toLowerCase().equals("on the way")){
-                                notifymessage();
-                            }
                             foods.add(request);
+
 
                         }
 
@@ -161,6 +159,12 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
                     ordersAdapter.notifyDataSetChanged();
                 }
                 hideProgressDialog();
+                for (Request mrequest:foods){
+                    String status= mrequest.getStatus();
+                    if (status.equals("On The Way")){
+                        notifymessage();
+                    }
+                }
             }
 
             @Override
@@ -190,10 +194,11 @@ public class OrdersActivity extends AppCompatActivity implements OrdersAdapter.o
 
     @Override
     public void onItemClick(Request request) {
+
 //        startActivity(new Intent(this,TrackOrder.class ));
-        if (request.getStatus().toLowerCase().equals("on the way")){
+//        if (request.getStatus().toLowerCase().equals("on the way")){
             notifymessage();
-        }
+//        }
 
     }
 

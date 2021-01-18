@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.AddCategory">
+    tools:context=".admin.AddDelights">
     <LinearLayout
         android:id="@+id/layout_button"
         android:orientation="vertical"
@@ -30,31 +30,25 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Enter Category Name"
+            android:hint="Enter Meal Name"
             android:textColorHint="@color/Black"
-            android:id="@+id/etcatname"
+            android:id="@+id/etmealname"
             />
-<!--        <EditText-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Enter Menu Id"-->
-<!--            android:textColorHint="@color/Black"-->
-<!--            android:id="@+id/etmenuid"-->
-<!--            />-->
-<!--        <EditText-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Enter menu Price"-->
-<!--            android:textColorHint="@color/Black"-->
-<!--            android:id="@+id/etmenuprice"-->
-<!--            />-->
-<!--        <EditText-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Enter menu Description"-->
-<!--            android:textColorHint="@color/Black"-->
-<!--            android:id="@+id/etmenudescription"-->
-<!--            />-->
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter Meal Id"
+            android:textColorHint="@color/Black"
+            android:id="@+id/etmealid"
+            />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter Meal Price"
+            android:textColorHint="@color/Black"
+            android:id="@+id/etmealprice"
+            />
+
         <Button
             android:id="@+id/btnsave"
             android:text="Save"

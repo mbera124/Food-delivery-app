@@ -43,6 +43,7 @@ public class OrderedActivity extends AppCompatActivity {
     GoogleSignInClient googleSignInClient;
     private static final String TAG = "OrderedActivity";
     String userId = " ", orderId = "";
+    GoogleSignInAccount acct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class OrderedActivity extends AppCompatActivity {
         cardViewmeals=findViewById(R.id.cardviewmeals);
         googleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN);
 
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+         acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
             String personName = acct.getDisplayName();
             String personEmail = acct.getEmail();
@@ -65,8 +66,9 @@ public class OrderedActivity extends AppCompatActivity {
 
         if(bundle != null){
             orderId = bundle.getString("orderId");
-        }
 
+        }
+        //orderId =  "1591390643633";
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_orders);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -104,9 +106,14 @@ public class OrderedActivity extends AppCompatActivity {
         });
         database = FirebaseDatabase.getInstance();
         //database.setPersistenceEnabled(true);
-        String key = acct.getId();
-        userId = key;
-        databaseReference = database.getReference("Requests").child(key).child(orderId);
+        String skey = acct.getId();
+        //String skey = "102354684639490738615";
+         userId = skey;
+         if(skey != null) {
+//             Log.d("testtt", orderId);
+  //           Log.d("testtt", skey);
+             databaseReference = database.getReference("Requests").child(skey).child(orderId);
+         }
         //breakfast
         orderedAdapter = new OrderedAdapter(this, requestList);
         recycler_meal = findViewById(R.id.recycler_meal);
@@ -126,7 +133,7 @@ public class OrderedActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                requestList.clear();
+              //  requestList.clear();
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Log.d("snap", ""+ snapshot.getChildrenCount());
@@ -146,7 +153,8 @@ public class OrderedActivity extends AppCompatActivity {
                     }
                 }
 //                hideProgressDialog();
-                Toast.makeText(OrderedActivity.this, "" + requestList.size(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderedActivity.this, "" + requestList.size(), Toast.LENGTH_LONG).show();
+                Log.d("orderssize" , "" +requestList.size() );
                 orderedAdapter.notifyDataSetChanged();
             }
 

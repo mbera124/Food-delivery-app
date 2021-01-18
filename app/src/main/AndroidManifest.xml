@@ -20,7 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.OrderedActivity"></activity>
+        <activity android:name=".admin.AddSoftDrinks"></activity>
+        <activity android:name=".admin.AddDelights" />
+        <activity android:name=".admin.AddBreakfast" />
+        <activity android:name=".activities.OrderedActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -60,20 +63,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-        <!-- Firebase Notifications -->
-        <service android:name=".service.MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <service android:name=".service.MyFirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <!-- ./Firebase Notifications -->
     </application>
 
 </manifest>

@@ -5,17 +5,17 @@ public class SoftDrinks {
     private String Image;
     private String MenuId;
     private String Price;
-    private String Description;
+//    private String Description;
 
     public SoftDrinks() {
     }
 
-    public SoftDrinks(String name, String image, String menuId, String price, String description) {
+    public SoftDrinks(String name, String image, String menuId, String price) {
         Name = name;
         Image = image;
         MenuId = menuId;
         Price = price;
-        Description = description;
+//        Description = description;
     }
 
     public String getName() {
@@ -50,11 +50,11 @@ public class SoftDrinks {
         Price = price;
     }
 
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
-    }
+//    public String getDescription() {
+//        return Description;
+//    }
+//
+//    public void setDescription(String description) {
+//        Description = description;
+//    }
 }

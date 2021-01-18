@@ -10,11 +10,10 @@ public class Breakfast {
     public Breakfast() {
     }
 
-    public Breakfast(String name, String image, String price, String description, String menuId ) {
+    public Breakfast(String name, String image, String price, String menuId ) {
         Name = name;
         Image = image;
         Price=price;
-        Description=description;
         MenuId=menuId;
     }
 
@@ -42,13 +41,6 @@ public class Breakfast {
         Price = price;
     }
 
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
-    }
 
     public String getMenuId() {
         return MenuId;

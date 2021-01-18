@@ -4,7 +4,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:background="@drawable/berry"
+android:background="@drawable/tea"
 tools:context=".activities.UserDashboard">
 
 <LinearLayout
@@ -79,6 +79,7 @@ android:textSize="15sp"
      android:clickable="true"
      android:layout_marginStart="5dp"
      android:focusable="true" />
+
                                    </LinearLayout>
 
                     </LinearLayout>
@@ -91,6 +92,47 @@ android:textSize="15sp"
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/cardviewedit"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:cardBackgroundColor="@android:color/transparent"-->
+<!--        android:layout_marginBottom="55dp">-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="1">-->
+<!--        <Button-->
+<!--            android:layout_width="70dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="5dp"-->
+<!--            android:text="ADD CATEGORY"-->
+<!--            android:src="@drawable/ic_add_circle_black_24dp"-->
+<!--            android:id="@+id/btnaddcategory"/>-->
+<!--            <Button-->
+<!--                android:layout_width="70dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="5dp"-->
+<!--                android:text="ADD BREAKFAST"-->
+<!--                android:src="@drawable/ic_add_circle_black_24dp"-->
+<!--                android:id="@+id/btnaddbreakfast"/>-->
+<!--            <Button-->
+<!--                android:layout_width="70dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="5dp"-->
+<!--                android:text="ADD DELIGHT "-->
+<!--                android:src="@drawable/ic_add_circle_black_24dp"-->
+<!--                android:id="@+id/btnadddelights"/>-->
+<!--            <Button-->
+<!--                android:layout_width="70dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="5dp"-->
+<!--                android:text="ADD SOFT DRINK"-->
+<!--                android:src="@drawable/ic_add_circle_black_24dp"-->
+<!--                android:id="@+id/btnaddsoftdrinks"/>-->
+<!--        </LinearLayout>-->
+<!--    </androidx.cardview.widget.CardView>-->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardviewbreakfast"
                     android:layout_width="match_parent"
@@ -104,6 +146,7 @@ android:textSize="15sp"
                         android:layout_height="wrap_content"
                         android:paddingBottom="16dp"
                         android:scrollbars="vertical"/>
+
 
                 </androidx.cardview.widget.CardView>
 <!--           </androidx.core.widget.NestedScrollView>-->

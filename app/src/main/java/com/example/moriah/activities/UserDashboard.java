@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +37,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,8 +48,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDashboard extends AppCompatActivity implements CategoryAdapter.onItemClicklistener {
-    CardView cardViewtop, cardViewbreakfast, cardProfile, cardNotifications, cardAbout, cardSignout;
-    FloatingActionButton btncart;
+    CardView cardViewtop, cardViewbreakfast, cardviewedit, cardNotifications, cardAbout, cardSignout;
+    Button btnadd,btnaddbreakfast,btnadddelights,btnaddsoftdrinks;
     PrefManager prefManager;
     private FirebaseAuth auth;
     FirebaseDatabase database;
@@ -79,11 +79,15 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
         setContentView(R.layout.activity_user_dashboard);
         cardViewtop = findViewById(R.id.cardViewtop);
         cardViewbreakfast = findViewById(R.id.cardviewbreakfast);
+//        cardviewedit = findViewById(R.id.cardviewedit);
         tvname=findViewById(R.id.tvprofilename);
 //        imgedit=findViewById(R.id.tvedit);
         imgexit=findViewById(R.id.tvsignout);
         imgprofile=findViewById(R.id.imgudprifile);
-
+//        btnadd=findViewById(R.id.btnaddcategory);
+//          btnaddbreakfast=findViewById(R.id.btnaddbreakfast);
+//          btnadddelights=findViewById(R.id.btnadddelights);
+//          btnaddsoftdrinks=findViewById(R.id.btnaddsoftdrinks);
 //        imgedit.setOnClickListener(v -> {
 //            startActivity(new Intent(UserDashboard.this, ProfileActivity.class));
 //            finish();
@@ -115,8 +119,31 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imgprofile);
         }
+//          assert acct != null;
+//          if (acct.getEmail().equals("josephmbera124@gmail.com")){
+//    cardviewedit.setVisibility(View.VISIBLE);
+//}else{
+//    cardviewedit.setVisibility(View.INVISIBLE);
+//}
+//          btnadd.setOnClickListener(v -> {
+//              startActivity(new Intent(UserDashboard.this, AddCategory.class));
+//              finish();
+//          });
+//          btnaddbreakfast.setOnClickListener(v -> {
+//              startActivity(new Intent(UserDashboard.this, AddBreakfast.class));
+//              finish();
+//          });
+//          btnadddelights.setOnClickListener(v -> {
+//              startActivity(new Intent(UserDashboard.this, AddDelights.class));
+//              finish();
+//          });
+//          btnaddsoftdrinks.setOnClickListener(v -> {
+//              startActivity(new Intent(UserDashboard.this, AddSoftDrinks.class));
+//              finish();
+//          });
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+          bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -133,6 +160,7 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
                         break;
                     case R.id.navigation_orders:
                         if (acct.getEmail().equals("josephmbera124@gmail.com")) {
+
                             startActivity(new Intent(getApplicationContext(), EditOrders.class));
                         }else{
                             startActivity(new Intent(getApplicationContext(), OrdersActivity.class));
@@ -241,7 +269,7 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
                         breakfast.setName(lunch.getName());
                         breakfast.setPrice(lunch.getPrice());
                         breakfast.setImage(lunch.getImage());
-                        breakfast.setDescription(lunch.getDescription());
+//                        breakfast.setDescription(lunch.getDescription());
                         breakfastList.add(breakfast);
                     }
                 }
@@ -268,7 +296,7 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
                         breakfast.setName(softDrinks.getName());
                         breakfast.setPrice(softDrinks.getPrice());
                         breakfast.setImage(softDrinks.getImage());
-                        breakfast.setDescription(softDrinks.getDescription());
+//                        breakfast.setDescription(softDrinks.getDescription());
                         breakfastList.add(breakfast);
                     }
                 }

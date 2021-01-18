@@ -1,7 +1,10 @@
 package com.example.moriah.admin;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -161,6 +165,7 @@ public class EditOrders extends AppCompatActivity implements EditOrderAdapter.on
                                 request.setTxtLocationResult(snapshot.child("Location").getValue().toString());
                                 request.setUserIdkey(snapshot.child("UserId").getValue().toString());
                                 request.setKey(snapshot.child("Mkey").getValue().toString());
+                                request.setProductId(snapshot.child("Mkey").getValue().toString());
 //                                request.setName(snapshot.child("name").getValue().toString());
 
                                 foods.add(request);
@@ -251,7 +256,7 @@ public class EditOrders extends AppCompatActivity implements EditOrderAdapter.on
                     if (foods.size() > 0) {
                         foods.clear();
                     }
-//                    sendNotify();
+                   sendNotify();
                 }
             }
         });
@@ -266,30 +271,30 @@ public class EditOrders extends AppCompatActivity implements EditOrderAdapter.on
         dialog.show();
     }
 
-//    private void sendNotify() {
-//        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this);
-//        nBuilder.setContentTitle("MORIAH");
-//        nBuilder.setContentText("Your order has been processed");
-//        nBuilder.setTicker("Moriah Notification");
-//        nBuilder.setAutoCancel(true);
-//        nBuilder.setSmallIcon(R.drawable.bell);
-//
-////        nBuilder.setNumber(++totalMessages);
-//
-//        Intent intent = new Intent(this, OrdersActivity.class);
-//
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//        stackBuilder.addParentStack(OrdersActivity.class);
-//
-//        stackBuilder.addNextIntent(intent);
-//
-//        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,
-//                PendingIntent.FLAG_UPDATE_CURRENT);
-//        nBuilder.setContentIntent(pendingIntent);
-//
-//        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        mNotificationManager.notify(NOTIFY_ME_ID, nBuilder.build());
-//    }
+    private void sendNotify() {
+        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this);
+        nBuilder.setContentTitle("MORIAH");
+        nBuilder.setContentText("Your order has been processed");
+        nBuilder.setTicker("Moriah Notification");
+        nBuilder.setAutoCancel(true);
+        nBuilder.setSmallIcon(R.drawable.bell);
+
+//        nBuilder.setNumber(++totalMessages);
+
+        Intent intent = new Intent(this, OrdersActivity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(OrdersActivity.class);
+
+        stackBuilder.addNextIntent(intent);
+
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        nBuilder.setContentIntent(pendingIntent);
+
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(NOTIFY_ME_ID, nBuilder.build());
+    }
 
 }
 

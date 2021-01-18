@@ -22,7 +22,7 @@ import com.example.moriah.activities.AboutUsActivity;
 import com.example.moriah.activities.CartActivity;
 import com.example.moriah.activities.OrdersActivity;
 import com.example.moriah.activities.UserDashboard;
-import com.example.moriah.model.Category;
+import com.example.moriah.model.Lunch;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,10 +38,10 @@ import com.google.firebase.storage.UploadTask;
 import java.io.IOException;
 import java.util.UUID;
 
-public class AddCategory extends AppCompatActivity {
-private Button btnselect,btnsave;
-private ImageView imgcategory;
-private EditText etcategory,etmenuid,etmenuprice,etmenudescription;
+public class AddDelights extends AppCompatActivity {
+    private Button btnselect,btnsave;
+    private ImageView imgcategory;
+    private EditText etmealname,etmealid,etmealprice;
     BottomNavigationView bottomNavigationView;
     private static final String TAG = AddCategory.class.getSimpleName();
     private Uri filePath;
@@ -52,21 +52,20 @@ private EditText etcategory,etmenuid,etmenuprice,etmenudescription;
     String Storage_Path = "https://console.firebase.google.com/u/0/project/bookings-f6c90/storage/bookings-f6c90.appspot.com/files~2FCategory";
 
     // Root Database Name for Firebase Database.
-    String Database_Path = "Category";
+    String Database_Path = "Delights";
 
     private final int PICK_IMAGE_REQUEST = 71;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_menu);
+        setContentView(R.layout.activity_add_delights);
         btnsave=findViewById(R.id.btnsave);
         btnselect=findViewById(R.id.btnselect);
         imgcategory=findViewById(R.id.imgcat);
-        etcategory=findViewById(R.id.etcatname);
-//        etmenuid=findViewById(R.id.etmenuid);
-//        etmenuprice=findViewById(R.id.etmenuprice);
-//        etmenudescription=findViewById(R.id.etmenudescription);
+        etmealname=findViewById(R.id.etmealname);
+        etmealid=findViewById(R.id.etmealid);
+        etmealprice=findViewById(R.id.etmealprice);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
             String personName = acct.getDisplayName();
@@ -114,7 +113,7 @@ private EditText etcategory,etmenuid,etmenuprice,etmenudescription;
         });
 
         storageReference = FirebaseStorage.getInstance().getReference();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Category");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Delights");
 
         btnselect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,20 +172,22 @@ private EditText etcategory,etmenuid,etmenuprice,etmenudescription;
                                 public void onSuccess(Uri uri) {
                                     String ImageURL = "";
                                     ImageURL = uri.toString();
-                                    String TempImageCategory = etcategory.getText().toString().trim();
+                                        String TempMealname = etmealname.getText().toString().trim();
+                                    String TempMealid = etmealid.getText().toString().trim();
+                                    String TempMealprice = etmealprice.getText().toString().trim();
 //                                    String TempImageId = etmenuid.getText().toString().trim();
 //                                    String TempImagePrice = etmenuprice.getText().toString().trim();
 //                                    String TempImageDescription = etmenudescription.getText().toString().trim();
 
-                                   Category category = new Category(TempImageCategory,ImageURL);
-                                    databaseReference.push().setValue(category);
+                                    Lunch lunch = new Lunch(TempMealname,ImageURL,TempMealid,TempMealprice);
+                                    databaseReference.push().setValue(lunch);
                                 }
-                        });
+                            });
 
 
                             progressDialog.dismiss();
-                            Toast.makeText(AddCategory.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(AddCategory.this, UserDashboard.class));
+                            Toast.makeText(AddDelights.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(AddDelights.this, UserDashboard.class));
                             finish();
                         }
                     })
@@ -195,7 +196,7 @@ private EditText etcategory,etmenuid,etmenuprice,etmenudescription;
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(AddCategory.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddDelights.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
 
