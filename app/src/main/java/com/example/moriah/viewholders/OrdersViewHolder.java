@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moriah.Interface.ItemClickListener;
@@ -44,7 +45,7 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
     private List<Order> orderList;
     NotificationManager mNotificationManager;
     public ItemClickListener itemClickListener;
-    private static final int NOTIFY_ME_ID=1337;
+    private static final String NOTIFY_ME_ID="moriah";
 
 
     public OrdersViewHolder(@NonNull View itemView) {
@@ -212,27 +213,46 @@ public class OrdersViewHolder  extends RecyclerView.ViewHolder {
 //        nBuilder.setContentIntent(pendingIntent);
 //        mNotificationManager =(NotificationManager) itemView.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 //        mNotificationManager.notify(NOTIFY_ME_ID, nBuilder.build());
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(itemView.getContext())
-                        .setSmallIcon(R.drawable.bell) //set icon for notification
-                        .setContentTitle("Notifications Example") //set title of notification
-                        .setContentText("This is a notification message")//this is notification message
-                        .setAutoCancel(true) // makes auto cancel of notification
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT); //set priority of notification
+//    <!--    NotificationCompat.Builder builder =
+//                new NotificationCompat.Builder(itemView.getContext())
+//                        .setSmallIcon(R.drawable.bell) //set icon for notification
+//                        .setContentTitle("Notifications Example") //set title of notification
+//                        .setContentText("This is a notification message")//this is notification message
+//                        .setAutoCancel(true) // makes auto cancel of notification
+//                        .setPriority(NotificationCompat.PRIORITY_HIGH); //set priority of notification
+//
+//
+//        Intent notificationIntent = new Intent(itemView.getContext(), OrdersActivity.class);
+//        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        //notification message will get at NotificationView
+//        notificationIntent.putExtra("message", "This is a notification message");
+//
+//        PendingIntent pendingIntent = PendingIntent.getActivity(itemView.getContext(), 0, notificationIntent,
+//                PendingIntent.FLAG_UPDATE_CURRENT);
+//        builder.setContentIntent(pendingIntent);
+//
+//        // Add as notification
+//        NotificationManager manager = (NotificationManager)itemView.getContext(). getSystemService(Context.NOTIFICATION_SERVICE);
+//        manager.notify(0, builder.build());-->
+        Intent intent = new Intent(itemView.getContext(), OrdersActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(itemView.getContext(), 0, intent, 0);
 
 
-        Intent notificationIntent = new Intent(itemView.getContext(), OrdersActivity.class);
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //notification message will get at NotificationView
-        notificationIntent.putExtra("message", "This is a notification message");
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(itemView.getContext(), 0, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(pendingIntent);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(itemView.getContext(), NOTIFY_ME_ID)
+                .setSmallIcon(R.drawable.bell)
+                .setContentTitle("Moriah")
+                .setContentText("Your order is ready")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(itemView.getContext());
 
-        // Add as notification
-        NotificationManager manager = (NotificationManager)itemView.getContext(). getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());
+// notificationId is a unique int for each notification that you must define
+        notificationManager.notify(1, builder.build());
+
     }
 
     public void bind(final Request request, EditOrderAdapter.onItemClicklistener onItemClick) {

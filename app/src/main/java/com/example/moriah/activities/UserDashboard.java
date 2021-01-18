@@ -1,7 +1,10 @@
 package com.example.moriah.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -70,6 +73,7 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
     private static final String TAG = "UserDashboard";
     private static final String ARG_NAME = "username";
     int previousposition=0;
+    private static final String NOTIFY_ME_ID="moriah";
 
       GoogleSignInClient googleSignInClient;
 
@@ -77,6 +81,7 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_dashboard);
+          createNotificationChannel();
         cardViewtop = findViewById(R.id.cardViewtop);
         cardViewbreakfast = findViewById(R.id.cardviewbreakfast);
 //        cardviewedit = findViewById(R.id.cardviewedit);
@@ -213,6 +218,20 @@ public class UserDashboard extends AppCompatActivity implements CategoryAdapter.
          loadBreakfast();
 
 
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(NOTIFY_ME_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     private void SignOut() {

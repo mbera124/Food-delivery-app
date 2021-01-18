@@ -56,4 +56,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="about">Located in Juja along Thika super highway, Moriah Fries provides tatsy, hygenic and fresh meals prepared by well trained chef\'s that will surely bring happiness to your stomach</string>
+    <string name="channel_name">moriah</string>
+    <string name="channel_description">order</string>
 </resources>
